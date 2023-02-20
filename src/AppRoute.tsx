@@ -1,4 +1,3 @@
-import React from 'react';
 import Admin from 'pages/Admin';
 import Home from 'pages/Home';
 import { Route, Routes } from 'react-router';
