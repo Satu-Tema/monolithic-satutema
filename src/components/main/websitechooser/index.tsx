@@ -3,7 +3,7 @@ import React from 'react';
 
 const MainWebsiteChooser = () => {
    return (
-      <Box p={10} minH="80vh" backgroundImage="./images/bgconcrete.png">
+      <Box p={10} minH={250} backgroundImage="./images/bgconcrete.png">
          <Container maxW="container.lg">
             <Heading textAlign="center" mt={20} fontWeight={500}>
                Kenapa Menggunakan SatuTema?

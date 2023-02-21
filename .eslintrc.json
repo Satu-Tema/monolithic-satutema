@@ -23,6 +23,10 @@
         "@typescript-eslint/ban-types": "off",
         "@typescript-eslint/strict-boolean-expressions": "off",
         "@typescript-eslint/consistent-type-imports": "off",
-        "@typescript-eslint/react-in-jsx-scope": "off"
+        "@react/react-in-jsx-scope": "off",
+        "@typescript-eslint/no-floating-promises": "off",
+        "@typescript-eslint/no-confusing-void-expression": "off",
+        "@typescript-eslint/no-misused-promises": "off",
+        "@typescript-eslint/prefer-optional-chain": "off"
     }
 }

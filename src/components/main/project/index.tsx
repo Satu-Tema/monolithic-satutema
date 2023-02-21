@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const MainProjects = () => {
    return (
-      <Box p={10} minH="80vh" backgroundImage="./images/bgblue.png">
+      <Box p={10} minH={250} backgroundImage="./images/bgblue.png">
          <Container maxW="container.lg">
             <Heading textAlign="center" mt={10} fontWeight={500}>
                Projects

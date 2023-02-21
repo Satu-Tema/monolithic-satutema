@@ -1,10 +1,18 @@
 import { Box, Button, Flex, Container, Text } from '@chakra-ui/react';
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 
 const MainNavbar = () => {
+   const navigate = useNavigate();
+
    return (
-      <Box background="#fff" position="fixed" minW="100%">
+      <Box
+         background="#fff"
+         position="fixed"
+         minW="100%"
+         borderBottomWidth={2}
+         borderBottomColor="rgba(18, 18, 18, 0.1)"
+      >
          <Container maxW="container.lg">
             <Flex
                top={0}
@@ -43,6 +51,7 @@ const MainNavbar = () => {
                      colorScheme="teal"
                      variant="outline"
                      _hover={{ bg: 'teal', color: '#fff' }}
+                     onClick={() => navigate('/auth/register')}
                   >
                      Buat Website
                   </Button>
@@ -50,6 +59,7 @@ const MainNavbar = () => {
                      colorScheme="teal"
                      variant="outline"
                      _hover={{ bg: 'teal', color: '#fff' }}
+                     onClick={() => navigate('/auth/login')}
                   >
                      Login
                   </Button>

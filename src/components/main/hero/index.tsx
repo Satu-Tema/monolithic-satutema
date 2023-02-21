@@ -3,7 +3,7 @@ import React from 'react';
 
 const MainHero = () => {
    return (
-      <Box p={10} minH="80vh">
+      <Box p={10} minH={250}>
          <Container maxW="container.lg">
             <Flex
                mt={{ sm: '3%', md: '6%' }}
