@@ -9,7 +9,8 @@ const DashboardNavbar = () => {
    return (
       <Stack
          p="6"
-         border={'2px solid rgba(18, 18, 18, 0.1)'}
+         borderColor="rgba(18, 18, 18, 0.1)"
+         borderBottomWidth={1}
          alignItems={{
             base: 'stretch',
             md: isDesktopSidebarOpened ? 'stretch' : 'center',

@@ -1,19 +1,20 @@
-import { Box, Heading, Text, Button } from '@chakra-ui/react';
+import { Box, Heading, Text, Button, Center } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
 export default function NotFound() {
    const navigate = useNavigate();
    return (
-      <Box textAlign="center" mt={180} py={10} px={6}>
-         <Heading
-            display="inline-block"
-            as="h2"
-            size="2xl"
-            bgGradient="linear(to-r, blue, blue)"
-            backgroundClip="text"
-         >
-            404
-         </Heading>
+      <Box textAlign="center" py={10} px={6}>
+         <Center>
+            <img
+               loading="lazy"
+               alt="Satu Tema"
+               src={`${process.env.PUBLIC_URL}/images/clock.png`}
+               style={{ objectFit: 'cover' }}
+               width={350}
+               height={200}
+            />
+         </Center>
          <Text fontSize="18px" mt={3} mb={2}>
             Page Not Found
          </Text>

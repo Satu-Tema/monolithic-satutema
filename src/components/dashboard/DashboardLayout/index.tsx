@@ -9,22 +9,11 @@ import { DashboardLayoutProps, DashboardSidebarNavItem } from 'ts/DashboardSideb
 import generateSidebarItemsUsers from 'utils/generatedata/sidebar/sidebarItems/users';
 import generateSidebarItemsAdmin from 'utils/generatedata/sidebar/sidebarItems/admin';
 
-const DashboardLayout = ({ sidebarFor, children }: DashboardLayoutProps) => {
-   let sidebarItems: DashboardSidebarNavItem[] = [];
-   //   useAuth(sidebarFor === 'pengajar' ? 'USER' : 'ADMIN');
-   //   const { data: isInstructor } = useRemoteIsInstructor();
-   switch (sidebarFor) {
-      case 'user':
-         sidebarItems = generateSidebarItemsUsers();
-         break;
-      default:
-         sidebarItems = generateSidebarItemsAdmin();
-   }
-
+const DashboardLayout = ({ children }: DashboardLayoutProps) => {
    return (
       <Flex overflow="hidden">
          <DashboardProvider>
-            <DashboardSidebar items={sidebarItems} />
+            <DashboardSidebar items={generateSidebarItemsAdmin()} />
             <DashboardMain>{children}</DashboardMain>
          </DashboardProvider>
       </Flex>

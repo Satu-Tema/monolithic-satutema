@@ -1,28 +1,17 @@
-import { FiActivity, FiBook, FiDollarSign, FiMessageCircle } from 'react-icons/fi';
+import { FiBook, FiSettings } from 'react-icons/fi';
 import { DashboardSidebarNavItem } from 'ts/DashboardSidebar';
 
 function generateSidebarItemsUsers(): DashboardSidebarNavItem[] {
    return [
       {
-         name: 'Kursus',
+         name: 'Dashboard',
          path: '/user',
          icon: FiBook,
       },
       {
-         name: 'Pertanyaan',
-         path: '/user/qna',
-         icon: FiMessageCircle,
-         badge: '180',
-      },
-      {
-         name: 'Pendapatan Instruktur',
-         path: '/user/instructor-revenue',
-         icon: FiActivity,
-      },
-      {
-         name: 'Saldo Pendapatan',
-         path: '/user/saldo',
-         icon: FiDollarSign,
+         name: 'Pengaturan',
+         path: '/user/setting',
+         icon: FiSettings,
       },
    ];
 }
