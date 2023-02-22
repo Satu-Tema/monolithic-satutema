@@ -25,7 +25,7 @@ const MainFooter = () => {
          </Box>
          <Box bg="#127CA6" p={5}>
             <Text textAlign="center" color="#fff">
-               © 2023 satutema.com. All rights reserved.
+               © {new Date().getFullYear()} satutema.com. All rights reserved.
             </Text>
          </Box>
       </>
