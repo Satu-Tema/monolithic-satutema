@@ -1,5 +1,4 @@
 import React from 'react';
-import Admin from 'pages/Admin';
 import Home from 'pages/Home';
 import { Route, Routes } from 'react-router';
 import ProtectedRoute from 'utils/ProtectedRoute';
@@ -7,6 +6,8 @@ import { BrowserRouter } from 'react-router-dom';
 import Login from 'pages/auth/Login';
 import Register from 'pages/auth/Register';
 import CreateWebsite from 'pages/CreateWebsite';
+import AdminDashboard from 'pages/admin';
+import NotFound from 'pages/404';
 
 const AppRoute = () => {
    return (
@@ -21,11 +22,11 @@ const AppRoute = () => {
                path="admin"
                element={
                   <ProtectedRoute isAllowed={'admin'}>
-                     <Admin />
+                     <AdminDashboard />
                   </ProtectedRoute>
                }
             />
-            <Route path="*" element={<p>Theres nothing here: 404!</p>} />
+            <Route path="*" element={<NotFound />} />
          </Routes>
       </BrowserRouter>
    );

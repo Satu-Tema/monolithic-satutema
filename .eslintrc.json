@@ -27,6 +27,27 @@
         "@typescript-eslint/no-floating-promises": "off",
         "@typescript-eslint/no-confusing-void-expression": "off",
         "@typescript-eslint/no-misused-promises": "off",
-        "@typescript-eslint/prefer-optional-chain": "off"
+        "@typescript-eslint/prefer-optional-chain": "off",
+        "react/react-in-jsx-scope": "off",
+        "react/destructuring-assignment": "off",
+        "jsx-a11y/anchor-is-valid": "off",
+        "react-hooks/exhaustive-deps": "off",
+        "react/require-default-props": "off",
+        "react/jsx-props-no-spreading": "off",
+        "import/prefer-default-export": "off",
+        "class-methods-use-this": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+        "@next/next/no-document-import-in-page": "off",
+        "@typescript-eslint/consistent-type-assertions": "off",
+        "react/jsx-no-bind": [
+          "error",
+          {
+            "ignoreDOMComponents": false,
+            "ignoreRefs": false,
+            "allowArrowFunctions": true,
+            "allowFunctions": true,
+            "allowBind": false
+          }
+        ]
     }
 }
