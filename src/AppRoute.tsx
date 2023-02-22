@@ -8,6 +8,25 @@ import CreateWebsite from 'pages/CreateWebsite';
 import AdminDashboard from 'pages/admin';
 import NotFound from 'pages/404';
 import UserDashboard from 'pages/user';
+import Categories from 'pages/admin/categories';
+
+const AdminRoute = [
+   {
+      path: 'admin',
+      component: <AdminDashboard />,
+   },
+   {
+      path: 'admin/categories',
+      component: <Categories />,
+   },
+];
+
+const UserRoute = [
+   {
+      path: 'user',
+      component: <UserDashboard />,
+   },
+];
 
 const AppRoute = () => {
    return (
@@ -20,24 +39,23 @@ const AppRoute = () => {
             <Route path="/auth/register/create" element={<CreateWebsite />} />
 
             {/* admin */}
-            <Route
-               path="admin"
-               element={
-                  <ProtectedRoute isAllowed={'admin'}>
-                     <AdminDashboard />
-                  </ProtectedRoute>
-               }
-            />
+            {AdminRoute.map((el, i) => (
+               <Route
+                  key={i}
+                  path={el.path}
+                  element={<ProtectedRoute isAllowed={'admin'}>{el.component}</ProtectedRoute>}
+               />
+            ))}
 
             {/* user */}
-            <Route
-               path="user"
-               element={
-                  <ProtectedRoute isAllowed={'user'}>
-                     <UserDashboard />
-                  </ProtectedRoute>
-               }
-            />
+            {UserRoute.map((el, i) => (
+               <Route
+                  key={i}
+                  path={el.path}
+                  element={<ProtectedRoute isAllowed={'user'}>{el.component}</ProtectedRoute>}
+               />
+            ))}
+
             <Route path="*" element={<NotFound />} />
          </Routes>
       </BrowserRouter>

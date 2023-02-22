@@ -28,7 +28,7 @@ const DashboardSidebar = ({ items }: DashboardSidebarProps) => {
                      <img
                         loading="lazy"
                         alt="Satu Tema"
-                        src="./images/satutema.png"
+                        src={`${process.env.PUBLIC_URL}/images/satutema.png`}
                         style={{ objectFit: 'cover' }}
                         width={150}
                         height={100}

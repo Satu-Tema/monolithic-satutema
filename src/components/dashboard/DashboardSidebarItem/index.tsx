@@ -15,7 +15,7 @@ const DashboardSidebarItem = ({ item, pathname }: DashboardSidebarItemProps) => 
             <Flex
                align="stretch"
                alignItems="center"
-               borderLeftColor={isActive ? 'grey' : 'transparent'}
+               borderLeftColor={isActive ? 'blue' : 'transparent'}
                borderLeftWidth={4}
                p="3"
                bg={isActive ? 'white' : undefined}
@@ -72,14 +72,12 @@ const DashboardSidebarItem = ({ item, pathname }: DashboardSidebarItemProps) => 
             as="a"
             align="stretch"
             alignItems="center"
-            borderLeftColor={isActive ? 'black' : 'transparent'}
-            borderLeftWidth={4}
             p="3"
-            bg={isActive ? 'white' : undefined}
-            color="black"
+            bg={isActive ? '#F3F3F3' : undefined}
+            // color={isActive ? '#127CA6' : 'black'}
             transitionProperty="common"
             transitionDuration="normal"
-            _hover={{ bg: 'white' }}
+            // _hover={{ bg: 'white' }}
          >
             <Box ml="2" mr="4" color={isActive ? 'black' : 'black'}>
                <Icon as={item.icon} />
