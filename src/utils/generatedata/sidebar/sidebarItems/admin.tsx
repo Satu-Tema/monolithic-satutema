@@ -1,4 +1,5 @@
 import { BiCategory, BiHome } from 'react-icons/bi';
+import { FaLaptopCode } from 'react-icons/fa';
 import { FiSettings } from 'react-icons/fi';
 
 import { DashboardSidebarNavItem } from 'ts/DashboardSidebar';
@@ -10,6 +11,11 @@ function generateSidebarItemsAdmin(): DashboardSidebarNavItem[] {
          name: 'Kategori',
          path: '/admin/categories',
          icon: BiCategory,
+      },
+      {
+         name: 'Tema',
+         path: '/admin/theme',
+         icon: FaLaptopCode,
       },
       {
          name: 'Pengaturan',

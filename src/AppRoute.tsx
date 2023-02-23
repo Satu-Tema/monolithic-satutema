@@ -9,6 +9,8 @@ import AdminDashboard from 'pages/admin';
 import NotFound from 'pages/404';
 import UserDashboard from 'pages/user';
 import Categories from 'pages/admin/categories';
+import Theme from 'pages/admin/theme';
+import ThemeEditor from 'pages/admin/theme/ThemeEditor';
 
 const AdminRoute = [
    {
@@ -18,6 +20,14 @@ const AdminRoute = [
    {
       path: 'admin/categories',
       component: <Categories />,
+   },
+   {
+      path: 'admin/theme',
+      component: <Theme />,
+   },
+   {
+      path: 'admin/theme-editor',
+      component: <ThemeEditor />,
    },
 ];
 
