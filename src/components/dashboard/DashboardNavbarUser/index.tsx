@@ -10,16 +10,23 @@ import {
    MenuItem,
    MenuList,
    Stack,
+   IconButton,
 } from '@chakra-ui/react';
 import { useDashboard } from 'context/DashboardProvider';
+import { FiMenu } from 'react-icons/fi';
 
 const DashboardNavbarUser = () => {
-   const { isDesktopSidebarOpened } = useDashboard();
+   const { isDesktopSidebarOpened, onSidebarToggle } = useDashboard();
 
    return (
       <Stack
          maxW="100%"
          p="5"
+         py={8}
+         zIndex={1}
+         backgroundColor="white"
+         position="sticky"
+         top={0}
          borderColor="rgba(18, 18, 18, 0.1)"
          borderBottomWidth={1}
          alignItems={{
@@ -34,15 +41,23 @@ const DashboardNavbarUser = () => {
          }}
       >
          <HStack justifyContent="space-between" alignItems="center" flexGrow={1}>
-            <img
-               loading="lazy"
-               alt="Satu Tema"
-               src="./images/satutema.png"
-               style={{ objectFit: 'cover' }}
-               width={150}
-               height={100}
+            <Box display={{ base: 'none', md: 'block' }}>
+               <img
+                  loading="lazy"
+                  alt="Satu Tema"
+                  src="./images/satutema.png"
+                  style={{ objectFit: 'cover' }}
+                  width={150}
+                  height={100}
+               />
+            </Box>
+            <IconButton
+               icon={<FiMenu />}
+               variant="solid-alt"
+               onClick={onSidebarToggle}
+               aria-label="Menu"
             />
-            <Box position="fixed" right={5}>
+            <Box position="fixed" right={4}>
                <Menu>
                   <MenuButton
                      as={Button}

@@ -27,7 +27,7 @@ const DashboardSidebarMobile = ({ items }: DashboardSidebarProps) => {
       <Drawer isOpen={isMobileSidebarOpened} onClose={onSidebarToggle} placement="left">
          <DrawerOverlay />
          <DrawerContent>
-            <Box py="6" h="100vh" overflow="auto" bg={bgColor}>
+            <Box zIndex={2} py="6" h="100vh" overflow="auto" bg={bgColor}>
                <Box ml="6">
                   <img
                      loading="lazy"

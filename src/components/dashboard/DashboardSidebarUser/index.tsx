@@ -25,7 +25,7 @@ const DashboardSidebarUser = ({ items }: DashboardSidebarProps) => {
          overflow="hidden"
       >
          <Box minW="xs" py="6" overflow="hidden">
-            <Flex as="nav" flexDirection="column" align="stretch" mt="12">
+            <Flex as="nav" flexDirection="column" align="stretch">
                {items.map((item, index) => (
                   <DashboardSidebarItemUser key={index} item={item} pathname={pathname} />
                ))}
