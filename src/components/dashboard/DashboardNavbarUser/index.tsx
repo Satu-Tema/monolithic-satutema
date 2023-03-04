@@ -14,8 +14,11 @@ import {
 } from '@chakra-ui/react';
 import { useDashboard } from 'context/DashboardProvider';
 import { FiMenu } from 'react-icons/fi';
+import { useDispatch } from 'react-redux';
+import { logout } from 'redux/userSlice';
 
 const DashboardNavbarUser = () => {
+   const dispatch = useDispatch();
    const { isDesktopSidebarOpened, onSidebarToggle } = useDashboard();
 
    return (
@@ -85,7 +88,7 @@ const DashboardNavbarUser = () => {
                      <br />
                      <MenuDivider />
                      <MenuItem>Account Settings</MenuItem>
-                     <MenuItem>Logout</MenuItem>
+                     <MenuItem onClick={() => dispatch(logout())}>Logout</MenuItem>
                   </MenuList>
                </Menu>
             </Box>
