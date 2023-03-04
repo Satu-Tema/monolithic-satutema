@@ -1,9 +1,11 @@
-import { Box, BoxProps, HStack, IconButton, Stack } from '@chakra-ui/react';
-import { motion } from 'framer-motion';
+import { Box, HStack, IconButton, Stack } from '@chakra-ui/react';
 import { FiLogOut, FiMenu } from 'react-icons/fi';
 import { useDashboard } from 'context/DashboardProvider';
+import { useDispatch } from 'react-redux';
+import { logout } from 'redux/userSlice';
 
 const DashboardNavbar = () => {
+   const dispatch = useDispatch();
    const { isDesktopSidebarOpened, onSidebarToggle } = useDashboard();
 
    return (
@@ -30,7 +32,12 @@ const DashboardNavbar = () => {
                aria-label="Menu"
             />
             <Box position="relative">
-               <IconButton icon={<FiLogOut />} variant="solid-alt" aria-label="LogOut" />
+               <IconButton
+                  onClick={() => dispatch(logout())}
+                  icon={<FiLogOut />}
+                  variant="solid-alt"
+                  aria-label="LogOut"
+               />
             </Box>
          </HStack>
       </Stack>

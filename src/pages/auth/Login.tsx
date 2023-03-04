@@ -67,7 +67,11 @@ const Login = () => {
                   position: 'top-right',
                });
                dispatch(login(data.data.results.payload));
-               navigate('/user');
+               if (data.data.results.authorize === 'admin') {
+                  navigate('/admin');
+               } else {
+                  navigate('/user');
+               }
             } else {
                toast({
                   title: 'Terjadi Kesalahan',
