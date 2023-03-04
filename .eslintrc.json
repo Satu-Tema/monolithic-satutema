@@ -48,6 +48,8 @@
             "allowFunctions": true,
             "allowBind": false
           }
-        ]
+        ],
+        "no-unneeded-ternary": "off",
+        "@typescript-eslint/no-unused-expressions": "off"
     }
 }
