@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
    Box,
    SimpleGrid,
@@ -9,6 +9,7 @@ import {
    Button,
    FormErrorMessage,
    Center,
+   useToast,
 } from '@chakra-ui/react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import MainNavbarAuth from 'components/main/navbarauth';
@@ -16,9 +17,14 @@ import { LoginFormSchema } from 'utils/schema/authSchema';
 import { LoginFormValues } from 'ts/schema/authSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { HOST } from 'utils/Host';
 
 const Register = () => {
+   const toast = useToast();
    const navigate = useNavigate();
+   const [loading, setLoading] = useState(false);
+
    const {
       register,
       handleSubmit,
@@ -31,7 +37,57 @@ const Register = () => {
       resolver: yupResolver(LoginFormSchema),
    });
 
-   const onSubmit: SubmitHandler<LoginFormValues> = (data) => console.log(data);
+   console.log(HOST);
+   const onSubmit: SubmitHandler<LoginFormValues> = (values) => {
+      setLoading(true);
+      axios
+         .post(
+            `${HOST as string}/auth/register`,
+            {
+               email: values.email,
+               password: values.password,
+            },
+            { timeout: 1000 * 60 },
+         )
+         .then((data) => {
+            setLoading(false);
+            if (data && data.data.status) {
+               navigate('/auth/register/create');
+            } else {
+               toast({
+                  title: 'Terjadi Kesalahan',
+                  description: data.data.message,
+                  status: 'error',
+                  duration: 9000,
+                  isClosable: true,
+                  position: 'top-right',
+               });
+            }
+         })
+         .catch((err) => {
+            setLoading(false);
+            if (err === 'ECONNABORTED') {
+               toast({
+                  title: 'Terjadi Kesalahan',
+                  description:
+                     ' Tidak dapat menjangkau Server, Periksa koneksi anda dan ulangi beberapa saat lagi.',
+                  status: 'error',
+                  duration: 9000,
+                  isClosable: true,
+                  position: 'top-right',
+               });
+            } else {
+               toast({
+                  title: 'Terjadi Kesalahan',
+                  description: err.response.data.message,
+                  status: 'error',
+                  duration: 9000,
+                  isClosable: true,
+                  position: 'top-right',
+               });
+            }
+         });
+   };
 
    return (
       <Box background="#fff">
@@ -60,7 +116,7 @@ const Register = () => {
                      </FormErrorMessage>
                   </FormControl>
                   <Button
-                     onClick={() => navigate('/auth/register/create')}
+                     isLoading={loading}
                      type="submit"
                      w="full"
                      colorScheme="blue"

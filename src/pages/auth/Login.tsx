@@ -15,8 +15,20 @@ import MainNavbarAuth from 'components/main/navbarauth';
 import { LoginFormSchema } from 'utils/schema/authSchema';
 import { LoginFormValues } from 'ts/schema/authSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useSelector } from 'react-redux/es/exports';
+// export interface RootState {
+//    user: UserType;
+//    // jenis state lainnya ...
+// }
 
+// export type UserType = {
+//    id: number;
+//    name: string;
+//    email: string;
+// };
 const Login = () => {
+   const user = useSelector((state: any) => state.user);
+   console.log('nice', user);
    const {
       register,
       handleSubmit,
