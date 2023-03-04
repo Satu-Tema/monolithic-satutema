@@ -31,7 +31,7 @@ const ModalWarning = ({
          <ModalContent maxW={['calc(100vw - 30px)', 'sm']}>
             <ModalHeader>
                <VStack>
-                  <Icon as={IoWarningOutline} fontSize="9xl" color="vocasia-red" />
+                  <Icon as={IoWarningOutline} fontSize="9xl" color="red" />
                   <Text>Warning</Text>
                </VStack>
             </ModalHeader>
@@ -47,7 +47,7 @@ const ModalWarning = ({
                         w={'full'}
                         mr={[0, '10px']}
                         flexGrow={1}
-                        variant="outline-text"
+                        variant="outline"
                         rounded="md"
                         onClick={onClose}
                         isDisabled={isLoading}
@@ -57,7 +57,7 @@ const ModalWarning = ({
                      <Button
                         w={'full'}
                         flexGrow={1}
-                        variant="solid-danger"
+                        colorScheme="red"
                         rounded="md"
                         onClick={buttonOnClick}
                         isLoading={isLoading}

@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import {
    Box,
@@ -22,6 +22,7 @@ import {
    Text,
    useDisclosure,
    Divider,
+   useToast,
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { SubmitHandler } from 'react-hook-form';
@@ -29,10 +30,14 @@ import { Controller, useForm, useFormState, useWatch } from 'react-hook-form';
 import { IoAdd, IoClose } from 'react-icons/io5';
 import { CategoryFormValues } from 'ts/schema/categorySchema';
 import { CategoryFormSchema } from 'utils/schema/categorySchema';
+import axios from 'axios';
+import { HOST } from 'utils/Host';
+import { mutate } from 'swr';
 
 const DashboardCreateNewCategory = () => {
    const { isOpen, onOpen, onClose } = useDisclosure();
-
+   const [loading, setLoading] = useState(false);
+   const toast = useToast();
    const { register, handleSubmit, reset, control } = useForm<CategoryFormValues>({
       resolver: yupResolver(CategoryFormSchema),
    });
@@ -41,6 +46,60 @@ const DashboardCreateNewCategory = () => {
    const onModalClose = () => {
       onClose();
       reset();
+   };
+
+   const onSubmit: SubmitHandler<CategoryFormValues> = (values) => {
+      setLoading(true);
+      axios
+         .post(
+            `${HOST as string}/admin/category`,
+            {
+               title_category: values.title,
+            },
+            {
+               headers: {
+                  Authorization: `Bearer ${localStorage.getItem('xtoken') as string}`,
+               },
+            },
+         )
+         .then((data) => {
+            setLoading(false);
+            if (data && data.data.status) {
+               mutate('/admin/category');
+               onClose();
+               reset();
+            } else {
+               toast({
+                  title: 'Terjadi Kesalahan',
+                  description: data.data.message,
+                  status: 'error',
+                  isClosable: true,
+                  position: 'top-right',
+               });
+            }
+         })
+         .catch((err) => {
+            setLoading(false);
+            if (err === 'ECONNABORTED') {
+               toast({
+                  title: 'Terjadi Kesalahan',
+                  description:
+                     ' Tidak dapat menjangkau Server, Periksa koneksi anda dan ulangi beberapa saat lagi.',
+                  status: 'error',
+                  isClosable: true,
+                  position: 'top-right',
+               });
+            } else {
+               toast({
+                  title: 'Terjadi Kesalahan',
+                  description: err.response.data.message,
+                  status: 'error',
+                  duration: 9000,
+                  isClosable: true,
+                  position: 'top-right',
+               });
+            }
+         });
    };
 
    return (
@@ -95,7 +154,14 @@ const DashboardCreateNewCategory = () => {
                      <Button variant="outline" colorScheme="blue" width={150} rounded="md">
                         Batal
                      </Button>
-                     <Button colorScheme="blue" width={150} type="submit" rounded="md">
+                     <Button
+                        onClick={handleSubmit(onSubmit)}
+                        colorScheme="blue"
+                        width={150}
+                        type="submit"
+                        rounded="md"
+                        isLoading={loading}
+                     >
                         Tambah
                      </Button>
                   </ModalFooter>
