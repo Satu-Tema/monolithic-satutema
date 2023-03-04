@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
    Box,
    SimpleGrid,
@@ -9,26 +9,30 @@ import {
    Button,
    FormErrorMessage,
    Center,
+   useToast,
 } from '@chakra-ui/react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import MainNavbarAuth from 'components/main/navbarauth';
 import { LoginFormSchema } from 'utils/schema/authSchema';
 import { LoginFormValues } from 'ts/schema/authSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useSelector } from 'react-redux/es/exports';
-// export interface RootState {
-//    user: UserType;
-//    // jenis state lainnya ...
-// }
+import { useDispatch, useSelector } from 'react-redux/es/exports';
+import { HOST } from 'utils/Host';
+import axios from 'axios';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { login } from 'redux/userSlice';
 
-// export type UserType = {
-//    id: number;
-//    name: string;
-//    email: string;
-// };
 const Login = () => {
+   const dispatch = useDispatch();
    const user = useSelector((state: any) => state.user);
-   console.log('nice', user);
+   const toast = useToast();
+   const navigate = useNavigate();
+   const [loading, setLoading] = useState(false);
+
+   if (user.isAuth) {
+      return <Navigate to="/user" replace />;
+   }
+
    const {
       register,
       handleSubmit,
@@ -41,7 +45,62 @@ const Login = () => {
       resolver: yupResolver(LoginFormSchema),
    });
 
-   const onSubmit: SubmitHandler<LoginFormValues> = (data) => console.log(data);
+   const onSubmit: SubmitHandler<LoginFormValues> = (values) => {
+      setLoading(true);
+      axios
+         .post(
+            `${HOST as string}/auth/login`,
+            {
+               email: values.email,
+               password: values.password,
+            },
+            { timeout: 1000 * 60 },
+         )
+         .then((data) => {
+            setLoading(false);
+            if (data && data.data.status) {
+               toast({
+                  title: 'Sukses',
+                  description: 'Anda berhasil masuk akun',
+                  status: 'success',
+                  isClosable: true,
+                  position: 'top-right',
+               });
+               dispatch(login(data.data.results.payload));
+               navigate('/user');
+            } else {
+               toast({
+                  title: 'Terjadi Kesalahan',
+                  description: data.data.message,
+                  status: 'error',
+                  isClosable: true,
+                  position: 'top-right',
+               });
+            }
+         })
+         .catch((err) => {
+            setLoading(false);
+            if (err === 'ECONNABORTED') {
+               toast({
+                  title: 'Terjadi Kesalahan',
+                  description:
+                     ' Tidak dapat menjangkau Server, Periksa koneksi anda dan ulangi beberapa saat lagi.',
+                  status: 'error',
+                  isClosable: true,
+                  position: 'top-right',
+               });
+            } else {
+               toast({
+                  title: 'Terjadi Kesalahan',
+                  description: err.response.data.message,
+                  status: 'error',
+                  duration: 9000,
+                  isClosable: true,
+                  position: 'top-right',
+               });
+            }
+         });
+   };
 
    return (
       <Box background="#fff">
@@ -69,7 +128,13 @@ const Login = () => {
                         {errors.password && errors.password.message}
                      </FormErrorMessage>
                   </FormControl>
-                  <Button type="submit" w="full" colorScheme="blue" variant="solid">
+                  <Button
+                     isLoading={loading}
+                     type="submit"
+                     w="full"
+                     colorScheme="blue"
+                     variant="solid"
+                  >
                      Masuk
                   </Button>
                </form>

@@ -37,7 +37,6 @@ const Register = () => {
       resolver: yupResolver(LoginFormSchema),
    });
 
-   console.log(HOST);
    const onSubmit: SubmitHandler<LoginFormValues> = (values) => {
       setLoading(true);
       axios
