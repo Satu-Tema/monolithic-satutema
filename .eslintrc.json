@@ -50,6 +50,7 @@
           }
         ],
         "no-unneeded-ternary": "off",
-        "@typescript-eslint/no-unused-expressions": "off"
+        "@typescript-eslint/no-unused-expressions": "off",
+        "@typescript-eslint/array-type": "off"
     }
 }

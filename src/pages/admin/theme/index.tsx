@@ -2,12 +2,8 @@ import {
    Button,
    Box,
    HStack,
-   Stack,
    VStack,
    Icon,
-   Input,
-   InputGroup,
-   InputLeftElement,
    Spacer,
    Text,
    Table,
@@ -15,49 +11,34 @@ import {
    Thead,
    Tr,
    Th,
-   Spinner,
-   FormControl,
    Divider,
 } from '@chakra-ui/react';
+import DashboardCreateNewTheme from 'components/dashboard/DashboardCreateNewTheme';
 import DashboardLayout from 'components/dashboard/DashboardLayout';
-import DashboardTableRowUser from 'components/dashboard/DashboardTableTheme';
+import DashboardTableTheme from 'components/dashboard/DashboardTableTheme';
+import useRemoteTheme from 'hooks/remote/useRemoteTheme';
 import { IoAdd } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 
 const Theme = () => {
    const navigate = useNavigate();
+   const { data } = useRemoteTheme();
+   console.log(data);
    return (
       <DashboardLayout sidebarFor="admin">
          <VStack align="stretch" py="6" px="10" spacing="6">
-            <HStack>
-               <Text fontSize="24" fontWeight="semibold">
-                  Tema
-               </Text>
-               <Spacer />
-               <Button
-                  rounded="md"
-                  leftIcon={<Icon as={IoAdd} fontSize="xl" />}
-                  variant="outline"
-                  onClick={() => navigate('/admin/theme-editor')}
-                  px="4"
-                  colorScheme="blue"
-               >
-                  Buat Tema
-               </Button>
-            </HStack>
-            <Divider />
+            <DashboardCreateNewTheme />
             <Box overflow="auto">
                <Table variant="striped">
                   <Thead>
                      <Tr fontSize="lg">
                         <Th>Judul</Th>
                         <Th>Kategori</Th>
-                        <Th>Link</Th>
-                        <Th>Aksi</Th>
+                        <Th textAlign="center">Aksi</Th>
                      </Tr>
                   </Thead>
                   <Tbody>
-                     <DashboardTableRowUser />
+                     {data && data.map((el) => <DashboardTableTheme dataTheme={el} key={el.id} />)}
                   </Tbody>
                </Table>
             </Box>

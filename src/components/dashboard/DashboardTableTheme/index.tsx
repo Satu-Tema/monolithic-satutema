@@ -14,28 +14,84 @@ import {
    LinkBox,
    LinkOverlay,
    Link,
+   useToast,
 } from '@chakra-ui/react';
+import axios from 'axios';
 import moment from 'moment';
+import { useState } from 'react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
+import { mutate } from 'swr';
+import { ThemeRemoteDataType } from 'ts/Theme';
+import { HOST } from 'utils/Host';
 
 import ModalWarning from '../DashboardModalWarning';
 
-const DashboardTableRowUser = () => {
+interface IDashboardTableTheme {
+   dataTheme: ThemeRemoteDataType;
+}
+const DashboardTableTheme = ({ dataTheme }: IDashboardTableTheme) => {
+   const toast = useToast();
+   const [loading, setLoading] = useState(false);
    const {
       isOpen: isDeleteModalOpen,
       onOpen: onDeleteModalOpen,
       onClose: onDeleteModalClose,
    } = useDisclosure();
 
+   const onDelete = () => {
+      setLoading(true);
+      axios
+         .delete(`${HOST as string}/admin/theme/${dataTheme.id}`, {
+            headers: {
+               Authorization: `Bearer ${localStorage.getItem('xtoken') as string}`,
+            },
+         })
+         .then((data) => {
+            setLoading(false);
+            if (data && data.data.status) {
+               mutate('/admin/theme');
+               onDeleteModalClose();
+            } else {
+               toast({
+                  title: 'Terjadi Kesalahan',
+                  description: data.data.message,
+                  status: 'error',
+                  isClosable: true,
+                  position: 'top-right',
+               });
+            }
+         })
+         .catch((err) => {
+            setLoading(false);
+            if (err === 'ECONNABORTED') {
+               toast({
+                  title: 'Terjadi Kesalahan',
+                  description:
+                     ' Tidak dapat menjangkau Server, Periksa koneksi anda dan ulangi beberapa saat lagi.',
+                  status: 'error',
+                  isClosable: true,
+                  position: 'top-right',
+               });
+            } else {
+               toast({
+                  title: 'Terjadi Kesalahan',
+                  description: err.response.data.message,
+                  status: 'error',
+                  duration: 9000,
+                  isClosable: true,
+                  position: 'top-right',
+               });
+            }
+         });
+   };
    return (
       <>
          <Tr fontSize="md">
             <Td>
-               <Text>sdsdfcsdf</Text>
+               <Text textTransform="capitalize">{dataTheme?.theme_name}</Text>
             </Td>
-            <Td>qwqewe</Td>
-            <Td>sdfsdf</Td>
-            <Td>
+            <Td>{dataTheme?.category}</Td>
+            <Td textAlign="center">
                <Menu isLazy placement="left">
                   <MenuButton
                      as={IconButton}
@@ -57,7 +113,7 @@ const DashboardTableRowUser = () => {
                            </Link>
                         </MenuItem>
                      </LinkBox>
-                     <MenuItem>Delete</MenuItem>
+                     <MenuItem onClick={onDeleteModalOpen}>Delete</MenuItem>
                   </MenuList>
                </Menu>
             </Td>
@@ -66,14 +122,14 @@ const DashboardTableRowUser = () => {
          <ModalWarning
             isOpen={isDeleteModalOpen}
             onClose={onDeleteModalClose}
-            buttonText="Hapus Murid"
-            buttonOnClick={() => {}}
-            // isLoading={isDelettingUser}
+            buttonText="Hapus Tema"
+            buttonOnClick={onDelete}
+            isLoading={loading}
          >
-            Kamu yakin ingin menghapus murid?
+            Kamu yakin ingin menghapus tema {dataTheme?.theme_name} ?
          </ModalWarning>
       </>
    );
 };
 
-export default DashboardTableRowUser;
+export default DashboardTableTheme;
