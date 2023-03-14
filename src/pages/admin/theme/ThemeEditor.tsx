@@ -608,44 +608,119 @@ const ThemeEditor = () => {
             <Box w="full">
                {navEditor !== '' && (
                   <>
-                     <ThemeHover onClose={() => setNavEditor('')}>
+                     <ThemeHover
+                        onClose={() => {
+                           setNavEditor('');
+                           setActiveSidebar({
+                              ...activeSidebar,
+                              navbar: {
+                                 navbar1: false,
+                                 navbar2: false,
+                                 navbar3: false,
+                              },
+                           });
+                        }}
+                     >
                         <>{renderNavEditor(navEditor)}</>
                      </ThemeHover>
                   </>
                )}
 
                {heroEditor !== '' && (
-                  <ThemeHover onClose={() => setHeroEditor('')}>
+                  <ThemeHover
+                     onClose={() => {
+                        setHeroEditor('');
+                        setActiveSidebar({
+                           ...activeSidebar,
+                           hero: {
+                              hero1: false,
+                              hero2: false,
+                           },
+                        });
+                     }}
+                  >
                      <>{renderHeroEditor(heroEditor)}</>
                   </ThemeHover>
                )}
 
                {featureEditor !== '' && (
-                  <ThemeHover onClose={() => setFeatureEditor('')}>
+                  <ThemeHover
+                     onClose={() => {
+                        setFeatureEditor('');
+                        setActiveSidebar({
+                           ...activeSidebar,
+                           feature: {
+                              feature1: false,
+                           },
+                        });
+                     }}
+                  >
                      <>{renderFeatureEditor(featureEditor)}</>
                   </ThemeHover>
                )}
 
                {menuEditor !== '' && (
-                  <ThemeHover onClose={() => setMenuEditor('')}>
+                  <ThemeHover
+                     onClose={() => {
+                        setMenuEditor('');
+                        setActiveSidebar({
+                           ...activeSidebar,
+                           menu: {
+                              menu1: false,
+                           },
+                        });
+                     }}
+                  >
                      <>{renderMenuEditor(menuEditor)}</>
                   </ThemeHover>
                )}
 
                {testimoniEditor !== '' && (
-                  <ThemeHover onClose={() => setTestimoniEditor('')}>
+                  <ThemeHover
+                     onClose={() => {
+                        setTestimoniEditor('');
+                        setActiveSidebar({
+                           ...activeSidebar,
+                           testimoni: {
+                              testimoni1: false,
+                           },
+                        });
+                     }}
+                  >
                      <>{renderTestimoniEditor(testimoniEditor)}</>
                   </ThemeHover>
                )}
 
                {galleryEditor !== '' && (
-                  <ThemeHover onClose={() => setGalleryEditor('')}>
+                  <ThemeHover
+                     onClose={() => {
+                        setGalleryEditor('');
+                        setActiveSidebar({
+                           ...activeSidebar,
+                           gallery: {
+                              gallery1: false,
+                           },
+                        });
+                     }}
+                  >
                      <>{renderGalleryEditor(galleryEditor)}</>
                   </ThemeHover>
                )}
 
                {footerEditor !== '' && (
-                  <ThemeHover onClose={() => setFooterEditor('')}>
+                  <ThemeHover
+                     onClose={() => {
+                        setFooterEditor('');
+                        setActiveSidebar({
+                           ...activeSidebar,
+                           footer: {
+                              footer1: false,
+                              footer2: false,
+                              footer3: false,
+                           },
+                        });
+                     }}
+                  >
                      <>{renderFooterEditor(footerEditor)}</>
                   </ThemeHover>
                )}
