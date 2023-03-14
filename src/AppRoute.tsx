@@ -26,7 +26,7 @@ const AdminRoute = [
       component: <Theme />,
    },
    {
-      path: 'admin/theme-editor',
+      path: 'admin/theme-editor/:id',
       component: <ThemeEditor />,
    },
 ];

@@ -1,74 +1,665 @@
-import { Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
+import { Box, Button, Flex, Heading, Text, useToast } from '@chakra-ui/react';
+import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import Navbar1 from 'template/umkm/navbar/navbar1';
+import Navbar2 from 'template/umkm/navbar/navbar2';
+import Navbar3 from 'template/umkm/navbar/navbar3';
+import ThemeHover from 'components/theme/ThemeHover';
+import Hero1 from 'template/umkm/hero/hero1';
+import Hero2 from 'template/umkm/hero/hero2';
+import Feature1 from 'template/umkm/features/features1';
+import Footerl from 'template/umkm/footer/footer1';
+import Footer2 from 'template/umkm/footer/footer2';
+import Footer3 from 'template/umkm/footer/footer3';
+import Menu1 from 'template/umkm/menu/menu1';
+import Testimoni1 from 'template/umkm/testimoni/testimoni1';
+import Gallery1 from 'template/umkm/gallery/gallery1';
+import axios from 'axios';
+import { mutate } from 'swr';
+import { HOST } from 'utils/Host';
 
 const ThemeEditor = () => {
    const navigate = useNavigate();
+   const toast = useToast();
+   const { id } = useParams();
+   const [navEditor, setNavEditor] = useState('');
+   const [heroEditor, setHeroEditor] = useState('');
+   const [featureEditor, setFeatureEditor] = useState('');
+   const [footerEditor, setFooterEditor] = useState('');
+   const [menuEditor, setMenuEditor] = useState('');
+   const [testimoniEditor, setTestimoniEditor] = useState('');
+   const [galleryEditor, setGalleryEditor] = useState('');
+
+   const [activeSidebar, setActiveSidebar] = useState({
+      navbar: {
+         navbar1: false,
+         navbar2: false,
+         navbar3: false,
+      },
+      hero: {
+         hero1: false,
+         hero2: false,
+      },
+      feature: {
+         feature1: false,
+      },
+      menu: {
+         menu1: false,
+      },
+      testimoni: {
+         testimoni1: false,
+      },
+      gallery: {
+         gallery1: false,
+      },
+      footer: {
+         footer1: false,
+         footer2: false,
+         footer3: false,
+      },
+   });
+
+   const renderNavEditor = (id: string) => {
+      switch (id) {
+         case 'navbar1':
+            return <Navbar1 />;
+         case 'navbar2':
+            return <Navbar2 />;
+         case 'navbar3':
+            return <Navbar3 />;
+         default:
+            return null;
+      }
+   };
+
+   const renderHeroEditor = (id: string) => {
+      switch (id) {
+         case 'hero1':
+            return <Hero1 />;
+         case 'hero2':
+            return <Hero2 />;
+         default:
+            return null;
+      }
+   };
+
+   const renderFeatureEditor = (id: string) => {
+      switch (id) {
+         case 'feature1':
+            return <Feature1 />;
+         default:
+            return null;
+      }
+   };
+
+   const renderMenuEditor = (id: string) => {
+      switch (id) {
+         case 'menu1':
+            return <Menu1 />;
+         default:
+            return null;
+      }
+   };
+
+   const renderTestimoniEditor = (id: string) => {
+      switch (id) {
+         case 'testimoni1':
+            return <Testimoni1 />;
+         default:
+            return null;
+      }
+   };
+
+   const renderGalleryEditor = (id: string) => {
+      switch (id) {
+         case 'gallery1':
+            return <Gallery1 />;
+         default:
+            return null;
+      }
+   };
+
+   const renderFooterEditor = (id: string) => {
+      switch (id) {
+         case 'footer1':
+            return <Footerl />;
+         case 'footer2':
+            return <Footer2 />;
+         case 'footer3':
+            return <Footer3 />;
+         default:
+            return null;
+      }
+   };
+
+   const isAddEditor =
+      navEditor === '' &&
+      heroEditor === '' &&
+      featureEditor === '' &&
+      footerEditor === '' &&
+      menuEditor === '' &&
+      testimoniEditor === '' &&
+      galleryEditor === ''
+         ? 'center'
+         : 'normal';
+
+   const onSubmit = () => {
+      const data = [
+         navEditor,
+         heroEditor,
+         featureEditor,
+         footerEditor,
+         menuEditor,
+         galleryEditor,
+         testimoniEditor,
+      ]
+         .toString()
+         .split(',')
+         .filter(Boolean)
+         .join(',');
+
+      axios
+         .put(
+            `${HOST as string}/admin/theme/themeorder/${id}`,
+            {
+               theme_order: data,
+            },
+            {
+               headers: {
+                  Authorization: `Bearer ${localStorage.getItem('xtoken') as string}`,
+               },
+            },
+         )
+         .then((data) => {
+            if (data && data.data.status) {
+               mutate('/admin/theme');
+               toast({
+                  title: 'Sukses',
+                  description: data.data.message,
+                  status: 'success',
+                  isClosable: true,
+                  position: 'top-right',
+               });
+            } else {
+               toast({
+                  title: 'Terjadi Kesalahan',
+                  description: data.data.message,
+                  status: 'error',
+                  isClosable: true,
+                  position: 'top-right',
+               });
+            }
+         })
+         .catch((err) => {
+            if (err === 'ECONNABORTED') {
+               toast({
+                  title: 'Terjadi Kesalahan',
+                  description:
+                     ' Tidak dapat menjangkau Server, Periksa koneksi anda dan ulangi beberapa saat lagi.',
+                  status: 'error',
+                  isClosable: true,
+                  position: 'top-right',
+               });
+            } else {
+               toast({
+                  title: 'Terjadi Kesalahan',
+                  description: err.response.data.message,
+                  status: 'error',
+                  duration: 9000,
+                  isClosable: true,
+                  position: 'top-right',
+               });
+            }
+         });
+   };
+
    return (
       <Box m={6}>
          <Flex
             flexWrap={{ base: 'wrap', md: 'initial' }}
             gap={10}
             mb={5}
-            justifyContent="center"
-            alignItems="center"
-            alignContent="center"
+            justifyContent={isAddEditor}
+            alignItems={isAddEditor}
+            alignContent={isAddEditor}
          >
             <Button
                onClick={() => navigate('/admin/theme')}
                colorScheme="blue"
-               variant="outline"
+               variant="solid"
                minW={{ base: 'full', md: '20%' }}
             >
                Kembali
             </Button>
 
-            <Button colorScheme="blue" variant="outline" w="full">
+            <Button onClick={onSubmit} colorScheme="blue" variant="solid" w="full">
                Simpan
             </Button>
          </Flex>
          <Flex
+            gap={10}
             flexWrap={{ base: 'wrap', md: 'initial' }}
-            justifyContent="center"
-            alignItems="center"
-            alignContent="center"
+            justifyContent={isAddEditor}
+            alignItems={isAddEditor}
+            alignContent={isAddEditor}
          >
             <Box
-               // display={{ base: 'none', md: 'block' }}
                as="aside"
                transitionProperty="min-width, width"
                transitionDuration="ultra-slow"
-               minH="80vh"
-               minW={{
-                  base: 'full',
-                  md: '20%',
-               }}
+               minW={{ base: 'full', md: '20%' }}
                borderRadius={10}
                border="1px solid #127CA6"
                p={3}
             >
+               {/* Navbar */}
                <Box>
                   <Heading fontWeight={500} fontSize="md">
                      Navbar
                   </Heading>
-                  <Box p={3} rounded="10" color="white" my={3} backgroundColor="#127CA6">
+                  <Box
+                     cursor="pointer"
+                     p={3}
+                     rounded="10"
+                     color={activeSidebar.navbar.navbar1 === true ? '#fff' : '#127CA6'}
+                     my={3}
+                     border="1px solid #127CA6"
+                     backgroundColor={activeSidebar.navbar.navbar1 === true ? '#127CA6' : '#fff'}
+                     _hover={{
+                        backgroundColor: '#127CA6',
+                        color: 'white',
+                     }}
+                     onClick={() => {
+                        setNavEditor('navbar1');
+                        setActiveSidebar({
+                           ...activeSidebar,
+                           navbar: {
+                              navbar1: true,
+                              navbar2: false,
+                              navbar3: false,
+                           },
+                        });
+                     }}
+                  >
                      <Text>Navbar 1 - UMKM</Text>
                   </Box>
-                  <Box p={3} rounded="10" color="white" my={3} backgroundColor="#127CA6">
+                  <Box
+                     cursor="pointer"
+                     p={3}
+                     rounded="10"
+                     my={3}
+                     border="1px solid #127CA6"
+                     color={activeSidebar.navbar.navbar2 === true ? '#fff' : '#127CA6'}
+                     backgroundColor={activeSidebar.navbar.navbar2 === true ? '#127CA6' : '#fff'}
+                     _hover={{
+                        backgroundColor: '#127CA6',
+                        color: 'white',
+                     }}
+                     onClick={() => {
+                        setNavEditor('navbar2');
+                        setActiveSidebar({
+                           ...activeSidebar,
+                           navbar: {
+                              navbar1: false,
+                              navbar2: true,
+                              navbar3: false,
+                           },
+                        });
+                     }}
+                  >
                      <Text>Navbar 2 - UMKM</Text>
                   </Box>
-                  <Box p={3} rounded="10" color="white" my={3} backgroundColor="#127CA6">
+                  <Box
+                     cursor="pointer"
+                     p={3}
+                     rounded="10"
+                     my={3}
+                     border="1px solid #127CA6"
+                     color={activeSidebar.navbar.navbar3 === true ? '#fff' : '#127CA6'}
+                     backgroundColor={activeSidebar.navbar.navbar3 === true ? '#127CA6' : '#fff'}
+                     _hover={{
+                        backgroundColor: '#127CA6',
+                        color: 'white',
+                     }}
+                     onClick={() => {
+                        setNavEditor('navbar3');
+                        setActiveSidebar({
+                           ...activeSidebar,
+                           navbar: {
+                              navbar1: false,
+                              navbar2: false,
+                              navbar3: true,
+                           },
+                        });
+                     }}
+                  >
                      <Text>Navbar 3 - UMKM</Text>
                   </Box>
                </Box>
+
+               {/* HERO */}
+               <Box>
+                  <Heading fontWeight={500} fontSize="md">
+                     Hero
+                  </Heading>
+                  <Box
+                     cursor="pointer"
+                     p={3}
+                     rounded="10"
+                     my={3}
+                     border="1px solid #127CA6"
+                     _hover={{
+                        backgroundColor: '#127CA6',
+                        color: 'white',
+                     }}
+                     color={activeSidebar.hero.hero1 === true ? '#fff' : '#127CA6'}
+                     backgroundColor={activeSidebar.hero.hero1 === true ? '#127CA6' : '#fff'}
+                     onClick={() => {
+                        setHeroEditor('hero1');
+                        setActiveSidebar({
+                           ...activeSidebar,
+                           hero: {
+                              hero1: true,
+                              hero2: false,
+                           },
+                        });
+                     }}
+                  >
+                     <Text>Hero 1 - UMKM</Text>
+                  </Box>
+                  <Box
+                     cursor="pointer"
+                     p={3}
+                     rounded="10"
+                     my={3}
+                     border="1px solid #127CA6"
+                     _hover={{
+                        backgroundColor: '#127CA6',
+                        color: 'white',
+                     }}
+                     color={activeSidebar.hero.hero2 === true ? '#fff' : '#127CA6'}
+                     backgroundColor={activeSidebar.hero.hero2 === true ? '#127CA6' : '#fff'}
+                     onClick={() => {
+                        setHeroEditor('hero2');
+                        setActiveSidebar({
+                           ...activeSidebar,
+                           hero: {
+                              hero1: false,
+                              hero2: true,
+                           },
+                        });
+                     }}
+                  >
+                     <Text>Hero 2 - UMKM</Text>
+                  </Box>
+               </Box>
+
+               {/* Feature  */}
+               <Box>
+                  <Heading fontWeight={500} fontSize="md">
+                     Fitur
+                  </Heading>
+                  <Box
+                     cursor="pointer"
+                     p={3}
+                     rounded="10"
+                     my={3}
+                     border="1px solid #127CA6"
+                     _hover={{
+                        backgroundColor: '#127CA6',
+                        color: 'white',
+                     }}
+                     color={activeSidebar.feature.feature1 === true ? '#fff' : '#127CA6'}
+                     backgroundColor={activeSidebar.feature.feature1 === true ? '#127CA6' : '#fff'}
+                     onClick={() => {
+                        setFeatureEditor('feature1');
+                        setActiveSidebar({
+                           ...activeSidebar,
+                           feature: {
+                              feature1: true,
+                           },
+                        });
+                     }}
+                  >
+                     <Text>Feature 1 - UMKM</Text>
+                  </Box>
+               </Box>
+
+               {/* Menu  */}
+               <Box>
+                  <Heading fontWeight={500} fontSize="md">
+                     Menu
+                  </Heading>
+                  <Box
+                     cursor="pointer"
+                     p={3}
+                     rounded="10"
+                     my={3}
+                     border="1px solid #127CA6"
+                     _hover={{
+                        backgroundColor: '#127CA6',
+                        color: 'white',
+                     }}
+                     color={activeSidebar.menu.menu1 === true ? '#fff' : '#127CA6'}
+                     backgroundColor={activeSidebar.menu.menu1 === true ? '#127CA6' : '#fff'}
+                     onClick={() => {
+                        setMenuEditor('menu1');
+                        setActiveSidebar({
+                           ...activeSidebar,
+                           menu: {
+                              menu1: true,
+                           },
+                        });
+                     }}
+                  >
+                     <Text>Menu 1 - UMKM</Text>
+                  </Box>
+               </Box>
+
+               {/* Testimoni */}
+               <Box>
+                  <Heading fontWeight={500} fontSize="md">
+                     Testimoni
+                  </Heading>
+                  <Box
+                     cursor="pointer"
+                     p={3}
+                     rounded="10"
+                     my={3}
+                     border="1px solid #127CA6"
+                     _hover={{
+                        backgroundColor: '#127CA6',
+                        color: 'white',
+                     }}
+                     color={activeSidebar.testimoni.testimoni1 === true ? '#fff' : '#127CA6'}
+                     backgroundColor={
+                        activeSidebar.testimoni.testimoni1 === true ? '#127CA6' : '#fff'
+                     }
+                     onClick={() => {
+                        setTestimoniEditor('testimoni1');
+                        setActiveSidebar({
+                           ...activeSidebar,
+                           testimoni: {
+                              testimoni1: true,
+                           },
+                        });
+                     }}
+                  >
+                     <Text>Testimoni 1 - UMKM</Text>
+                  </Box>
+               </Box>
+
+               {/* Gallery */}
+               <Box>
+                  <Heading fontWeight={500} fontSize="md">
+                     Galeri
+                  </Heading>
+                  <Box
+                     cursor="pointer"
+                     p={3}
+                     rounded="10"
+                     my={3}
+                     border="1px solid #127CA6"
+                     _hover={{
+                        backgroundColor: '#127CA6',
+                        color: 'white',
+                     }}
+                     color={activeSidebar.gallery.gallery1 === true ? '#fff' : '#127CA6'}
+                     backgroundColor={activeSidebar.gallery.gallery1 === true ? '#127CA6' : '#fff'}
+                     onClick={() => {
+                        setGalleryEditor('gallery1');
+                        setActiveSidebar({
+                           ...activeSidebar,
+                           gallery: {
+                              gallery1: true,
+                           },
+                        });
+                     }}
+                  >
+                     <Text>Galeri 1 - UMKM</Text>
+                  </Box>
+               </Box>
+
+               {/* Footer */}
+               <Box>
+                  <Heading fontWeight={500} fontSize="md">
+                     Footer
+                  </Heading>
+                  <Box
+                     cursor="pointer"
+                     p={3}
+                     rounded="10"
+                     my={3}
+                     border="1px solid #127CA6"
+                     _hover={{
+                        backgroundColor: '#127CA6',
+                        color: 'white',
+                     }}
+                     color={activeSidebar.footer.footer1 === true ? '#fff' : '#127CA6'}
+                     backgroundColor={activeSidebar.footer.footer1 === true ? '#127CA6' : '#fff'}
+                     onClick={() => {
+                        setFooterEditor('footer1');
+                        setActiveSidebar({
+                           ...activeSidebar,
+                           footer: {
+                              footer1: true,
+                              footer2: false,
+                              footer3: false,
+                           },
+                        });
+                     }}
+                  >
+                     <Text>Footer 1 - UMKM</Text>
+                  </Box>
+                  <Box
+                     cursor="pointer"
+                     p={3}
+                     rounded="10"
+                     my={3}
+                     border="1px solid #127CA6"
+                     _hover={{
+                        backgroundColor: '#127CA6',
+                        color: 'white',
+                     }}
+                     color={activeSidebar.footer.footer2 === true ? '#fff' : '#127CA6'}
+                     backgroundColor={activeSidebar.footer.footer2 === true ? '#127CA6' : '#fff'}
+                     onClick={() => {
+                        setFooterEditor('footer2');
+                        setActiveSidebar({
+                           ...activeSidebar,
+                           footer: {
+                              footer1: false,
+                              footer2: true,
+                              footer3: false,
+                           },
+                        });
+                     }}
+                  >
+                     <Text>Footer 2 - UMKM</Text>
+                  </Box>
+                  <Box
+                     cursor="pointer"
+                     p={3}
+                     rounded="10"
+                     my={3}
+                     border="1px solid #127CA6"
+                     _hover={{
+                        backgroundColor: '#127CA6',
+                        color: 'white',
+                     }}
+                     color={activeSidebar.footer.footer3 === true ? '#fff' : '#127CA6'}
+                     backgroundColor={activeSidebar.footer.footer3 === true ? '#127CA6' : '#fff'}
+                     onClick={() => {
+                        setFooterEditor('footer3');
+                        setActiveSidebar({
+                           ...activeSidebar,
+                           footer: {
+                              footer1: false,
+                              footer2: false,
+                              footer3: true,
+                           },
+                        });
+                     }}
+                  >
+                     <Text>Footer 3 - UMKM</Text>
+                  </Box>
+               </Box>
             </Box>
-            <Box
-               minW={{
-                  base: 'full',
-                  md: '80%',
-               }}
-               textAlign="center"
-            >
-               <Heading color="rgba(0, 0, 0, 0.4)">Tambah Section</Heading>
+            <Box w="full">
+               {navEditor !== '' && (
+                  <>
+                     <ThemeHover onClose={() => setNavEditor('')}>
+                        <>{renderNavEditor(navEditor)}</>
+                     </ThemeHover>
+                  </>
+               )}
+
+               {heroEditor !== '' && (
+                  <ThemeHover onClose={() => setHeroEditor('')}>
+                     <>{renderHeroEditor(heroEditor)}</>
+                  </ThemeHover>
+               )}
+
+               {featureEditor !== '' && (
+                  <ThemeHover onClose={() => setFeatureEditor('')}>
+                     <>{renderFeatureEditor(featureEditor)}</>
+                  </ThemeHover>
+               )}
+
+               {menuEditor !== '' && (
+                  <ThemeHover onClose={() => setMenuEditor('')}>
+                     <>{renderMenuEditor(menuEditor)}</>
+                  </ThemeHover>
+               )}
+
+               {testimoniEditor !== '' && (
+                  <ThemeHover onClose={() => setTestimoniEditor('')}>
+                     <>{renderTestimoniEditor(testimoniEditor)}</>
+                  </ThemeHover>
+               )}
+
+               {galleryEditor !== '' && (
+                  <ThemeHover onClose={() => setGalleryEditor('')}>
+                     <>{renderGalleryEditor(galleryEditor)}</>
+                  </ThemeHover>
+               )}
+
+               {footerEditor !== '' && (
+                  <ThemeHover onClose={() => setFooterEditor('')}>
+                     <>{renderFooterEditor(footerEditor)}</>
+                  </ThemeHover>
+               )}
+
+               {navEditor === '' &&
+                  heroEditor === '' &&
+                  featureEditor === '' &&
+                  footerEditor === '' &&
+                  menuEditor === '' &&
+                  galleryEditor === '' && (
+                     <Heading color="rgba(0, 0, 0, 0.4)" textAlign="center">
+                        Tambah Section
+                     </Heading>
+                  )}
             </Box>
          </Flex>
       </Box>

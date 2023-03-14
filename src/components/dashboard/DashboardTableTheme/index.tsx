@@ -20,6 +20,7 @@ import axios from 'axios';
 import moment from 'moment';
 import { useState } from 'react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
+import { useNavigate } from 'react-router-dom';
 import { mutate } from 'swr';
 import { ThemeRemoteDataType } from 'ts/Theme';
 import { HOST } from 'utils/Host';
@@ -31,6 +32,7 @@ interface IDashboardTableTheme {
 }
 const DashboardTableTheme = ({ dataTheme }: IDashboardTableTheme) => {
    const toast = useToast();
+   const navigate = useNavigate();
    const [loading, setLoading] = useState(false);
    const {
       isOpen: isDeleteModalOpen,
@@ -106,13 +108,9 @@ const DashboardTableTheme = ({ dataTheme }: IDashboardTableTheme) => {
                      }}
                   />
                   <MenuList minW="36">
-                     <LinkBox as="a">
-                        <MenuItem>
-                           <Link href={`/admin/users/edit/1`}>
-                              <LinkOverlay>Edit</LinkOverlay>
-                           </Link>
-                        </MenuItem>
-                     </LinkBox>
+                     <MenuItem onClick={() => navigate(`/admin/theme-editor/${dataTheme.id}`)}>
+                        Edit
+                     </MenuItem>
                      <MenuItem onClick={onDeleteModalOpen}>Delete</MenuItem>
                   </MenuList>
                </Menu>

@@ -1,6 +1,7 @@
-import { CategoryFormValues } from 'ts/schema/categorySchema';
+import { ThemeFormValues } from 'ts/schema/themeSchema';
 import * as Yup from 'yup';
 
-export const ThemeFormSchema: Yup.SchemaOf<CategoryFormValues> = Yup.object().shape({
-  title: Yup.string().required()
+export const ThemeFormSchema: Yup.SchemaOf<ThemeFormValues> = Yup.object().shape({
+  title: Yup.string().required(),
+  category: Yup.string().required()
 });

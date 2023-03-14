@@ -1,7 +1,7 @@
 import { BsChatLeftDots, BsShop } from 'react-icons/bs';
 import { FaLaptopCode } from 'react-icons/fa';
 import { FiHome, FiSettings } from 'react-icons/fi';
-import { GrGallery } from 'react-icons/gr';
+import { TfiGallery } from 'react-icons/tfi';
 import { MdFoodBank } from 'react-icons/md';
 import { DashboardSidebarNavItem } from 'ts/DashboardSidebar';
 
@@ -30,7 +30,7 @@ function generateSidebarItemsUsers(): DashboardSidebarNavItem[] {
       {
          name: 'Galeri',
          path: '/user/gallery',
-         icon: GrGallery,
+         icon: TfiGallery,
       },
       {
          name: 'Testimoni',
