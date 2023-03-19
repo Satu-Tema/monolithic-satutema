@@ -11,6 +11,9 @@ import UserDashboard from 'pages/user';
 import Categories from 'pages/admin/categories';
 import Theme from 'pages/admin/theme';
 import ThemeEditor from 'pages/admin/theme/ThemeEditor';
+import SettingDashboard from 'pages/user/setting';
+import FeatureDashboard from 'pages/user/feature';
+import TestimonyDashboard from 'pages/user/testimony';
 
 const AdminRoute = [
    {
@@ -35,6 +38,18 @@ const UserRoute = [
    {
       path: 'user',
       component: <UserDashboard />,
+   },
+   {
+      path: 'user/setting',
+      component: <SettingDashboard />,
+   },
+   {
+      path: 'user/feature',
+      component: <FeatureDashboard />,
+   },
+   {
+      path: 'user/testimony',
+      component: <TestimonyDashboard />,
    },
 ];
 

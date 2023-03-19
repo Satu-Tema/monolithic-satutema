@@ -23,7 +23,7 @@ import { useNavigate } from 'react-router-dom';
 const Theme = () => {
    const navigate = useNavigate();
    const { data } = useRemoteTheme();
-   console.log(data);
+
    return (
       <DashboardLayout sidebarFor="admin">
          <VStack align="stretch" py="6" px="10" spacing="6">

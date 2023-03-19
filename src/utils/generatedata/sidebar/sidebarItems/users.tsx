@@ -18,8 +18,8 @@ function generateSidebarItemsUsers(): DashboardSidebarNavItem[] {
          icon: FiSettings,
       },
       {
-         name: 'Toko',
-         path: '/user/shop',
+         name: 'Fitur',
+         path: '/user/feature',
          icon: BsShop,
       },
       {

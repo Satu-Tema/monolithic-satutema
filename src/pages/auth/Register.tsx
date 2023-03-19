@@ -19,8 +19,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { HOST } from 'utils/Host';
+import { useDispatch } from 'react-redux';
+import { login } from 'redux/userSlice';
 
 const Register = () => {
+   const dispatch = useDispatch();
    const toast = useToast();
    const navigate = useNavigate();
    const [loading, setLoading] = useState(false);
@@ -51,6 +54,7 @@ const Register = () => {
          .then((data) => {
             setLoading(false);
             if (data && data.data.status) {
+               dispatch(login(data.data.results.payload));
                navigate('/auth/register/create');
             } else {
                toast({

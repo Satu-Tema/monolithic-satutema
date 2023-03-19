@@ -26,7 +26,7 @@ const DashboardNavbarUser = () => {
          maxW="100%"
          p="5"
          py={8}
-         zIndex={1}
+         zIndex={100}
          backgroundColor="white"
          position="sticky"
          top={0}
@@ -48,7 +48,7 @@ const DashboardNavbarUser = () => {
                <img
                   loading="lazy"
                   alt="Satu Tema"
-                  src="./images/satutema.png"
+                  src={`${process.env.PUBLIC_URL}/images/satutema.png`}
                   style={{ objectFit: 'cover' }}
                   width={150}
                   height={100}

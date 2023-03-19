@@ -9,7 +9,8 @@ import type { Theme, ThemeRemoteData, ThemeRemoteDataType, ThemeType } from 'ts/
     toLocalMain: (theme) => ({
         id: theme.id,
         category: theme.category,
-        themeName: theme.theme_name
+        themeName: theme.theme_name,
+        themeOrder: theme.theme_order
     }),
     toLocalMainList: (themes) =>
       themes.map((theme) => themeDataMapper.toLocalMain(theme)),

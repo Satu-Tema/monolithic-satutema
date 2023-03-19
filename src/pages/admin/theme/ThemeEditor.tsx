@@ -1,5 +1,14 @@
-import { Box, Button, Flex, Heading, Text, useToast } from '@chakra-ui/react';
-import { useState } from 'react';
+import {
+   Box,
+   Button,
+   Divider,
+   Flex,
+   Heading,
+   Text,
+   useColorModeValue,
+   useToast,
+} from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Navbar1 from 'template/umkm/navbar/navbar1';
 import Navbar2 from 'template/umkm/navbar/navbar2';
@@ -17,6 +26,7 @@ import Gallery1 from 'template/umkm/gallery/gallery1';
 import axios from 'axios';
 import { mutate } from 'swr';
 import { HOST } from 'utils/Host';
+import useRemoteDetailTheme from 'hooks/remote/useRemoteDetailTheme';
 
 const ThemeEditor = () => {
    const navigate = useNavigate();
@@ -58,6 +68,36 @@ const ThemeEditor = () => {
          footer3: false,
       },
    });
+
+   const [loading, setLoading] = useState(false);
+
+   const { data } = useRemoteDetailTheme();
+
+   const resultOrder =
+      data?.theme_order && data?.theme_order?.length > 0 && data?.theme_order.toString().split(',');
+
+   const checkEditorDefault = (keyword: string) =>
+      resultOrder && resultOrder?.filter((item) => item.startsWith(keyword));
+
+   useEffect(() => {
+      if (data?.theme_order !== null) {
+         const navDefault = checkEditorDefault('navbar')?.toString();
+         const heroDefault = checkEditorDefault('hero')?.toString();
+         const featureDefault = checkEditorDefault('feature')?.toString();
+         const menuDefault = checkEditorDefault('menu')?.toString();
+         const testimoniDefault = checkEditorDefault('testimoni')?.toString();
+         const galleryDefault = checkEditorDefault('gallery')?.toString();
+         const footerDefault = checkEditorDefault('footer')?.toString();
+
+         if (navDefault) setNavEditor(navDefault as string);
+         if (heroDefault) setHeroEditor(heroDefault as string);
+         if (featureDefault) setFeatureEditor(featureDefault as string);
+         if (menuDefault) setMenuEditor(menuDefault as string);
+         if (testimoniDefault) setTestimoniEditor(testimoniDefault as string);
+         if (galleryDefault) setGalleryEditor(galleryDefault as string);
+         if (footerDefault) setFooterEditor(footerDefault as string);
+      }
+   }, [data?.theme_order]);
 
    const renderNavEditor = (id: string) => {
       switch (id) {
@@ -144,6 +184,7 @@ const ThemeEditor = () => {
          : 'normal';
 
    const onSubmit = () => {
+      setLoading(true);
       const data = [
          navEditor,
          heroEditor,
@@ -172,7 +213,8 @@ const ThemeEditor = () => {
          )
          .then((data) => {
             if (data && data.data.status) {
-               mutate('/admin/theme');
+               setLoading(false);
+               mutate(`/admin/theme/${id}`);
                toast({
                   title: 'Sukses',
                   description: data.data.message,
@@ -181,6 +223,7 @@ const ThemeEditor = () => {
                   position: 'top-right',
                });
             } else {
+               setLoading(false);
                toast({
                   title: 'Terjadi Kesalahan',
                   description: data.data.message,
@@ -214,8 +257,8 @@ const ThemeEditor = () => {
    };
 
    return (
-      <Box m={6}>
-         <Flex
+      <Box>
+         {/* <Flex
             flexWrap={{ base: 'wrap', md: 'initial' }}
             gap={10}
             mb={5}
@@ -232,11 +275,63 @@ const ThemeEditor = () => {
                Kembali
             </Button>
 
-            <Button onClick={onSubmit} colorScheme="blue" variant="solid" w="full">
+            <Button
+               isLoading={loading}
+               onClick={onSubmit}
+               colorScheme="blue"
+               variant="solid"
+               w="full"
+            >
                Simpan
             </Button>
-         </Flex>
+         </Flex> */}
+
          <Flex
+            top={0}
+            as="nav"
+            minW="full"
+            zIndex={1}
+            alignItems={'center'}
+            justifyContent="space-between"
+            p={5}
+         >
+            <Button
+               onClick={() => navigate('/admin/theme')}
+               colorScheme="blue"
+               variant="solid"
+               minW={{ base: 'full', md: '20%' }}
+            >
+               Kembali
+            </Button>
+            {/* <Box>
+               <Heading
+                  fontFamily={'Work Sans'}
+                  fontWeight={'bold'}
+                  color={useColorModeValue('gray.700', 'gray.50')}
+                  // fontSize={26}
+                  textAlign="center"
+                  textTransform="capitalize"
+               >
+                  {data?.theme_name}
+               </Heading>
+            </Box> */}
+            <Flex gap={5}>
+               <Button
+                  colorScheme="blue"
+                  variant="solid"
+                  // onClick={() => navigate('/auth/register')}
+               >
+                  Publikasi
+               </Button>
+               <Button colorScheme="blue" variant="solid" onClick={onSubmit} isLoading={loading}>
+                  Simpan
+               </Button>
+            </Flex>
+         </Flex>
+
+         <Divider />
+         <Flex
+            m={6}
             gap={10}
             flexWrap={{ base: 'wrap', md: 'initial' }}
             justifyContent={isAddEditor}

@@ -1,8 +1,13 @@
 import { Box, Button, Container, VStack, Text, Center, Flex, Icon } from '@chakra-ui/react';
 import DashboardLayoutUser from 'components/dashboard/DashboardLayoutUser';
+import useRemoteWebsite from 'hooks/remote/useRemoteWebsite';
+import { useNavigate } from 'react-router-dom';
 import generateSidebarItemsUsers from 'utils/generatedata/sidebar/sidebarItems/users';
 
 const UserDashboard = () => {
+   const navigate = useNavigate();
+   const { data } = useRemoteWebsite();
+
    return (
       <DashboardLayoutUser sidebarFor="user">
          <VStack align="stretch" py="4">
@@ -34,6 +39,8 @@ const UserDashboard = () => {
                                  md: 192,
                               }}
                               key={i}
+                              cursor="pointer"
+                              onClick={() => navigate(el.path)}
                            >
                               <Center>
                                  <Icon fontSize={40} as={el.icon} />
