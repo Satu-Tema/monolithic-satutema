@@ -40,10 +40,22 @@ const SettingDashboard = () => {
    const { errors } = useFormState({ control });
 
    const [loading, setLoading] = useState(false);
+   const [image, setImage] = useState<string | Blob>();
+   const [fileImg, setFileImg] = useState('');
+
+   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      e.preventDefault();
+      if (e.target.files && e.target.files.length > 0) {
+         setImage(e.target.files[0]);
+      } else {
+         setImage(undefined);
+      }
+   };
+
    const onEditSetting: SubmitHandler<SettingFormValues> = (values) => {
-      console.log(values);
       setLoading(true);
       const obj = {
+         ...parseObj,
          options: {
             description: values.description,
             address: values.address,
@@ -56,19 +68,19 @@ const SettingDashboard = () => {
          },
       };
 
+      const formData = new FormData();
+      if (image) {
+         formData.append('file', image);
+         formData.append('website_name', values.title);
+         formData.append('content', JSON.stringify(obj));
+      }
+
       axios
-         .put(
-            `${HOST as string}/user/website`,
-            {
-               website_name: values.title,
-               content: JSON.stringify(obj),
+         .put(`${HOST as string}/user/website/hero`, formData, {
+            headers: {
+               Authorization: `Bearer ${localStorage.getItem('xtoken') as string}`,
             },
-            {
-               headers: {
-                  Authorization: `Bearer ${localStorage.getItem('xtoken') as string}`,
-               },
-            },
-         )
+         })
          .then((data) => {
             setLoading(false);
             if (data && data.data.status) {
@@ -118,6 +130,7 @@ const SettingDashboard = () => {
          setValue('twitter', parseObj?.options?.twitter);
          setValue('titleHero', parseObj?.options?.titleHero);
          setValue('descriptionHero', parseObj?.options?.descriptionHero);
+         setFileImg(parseObj?.options?.imageHero);
       }
    }, [data]);
    return (
@@ -214,6 +227,20 @@ const SettingDashboard = () => {
                   <FormControl isInvalid={!!errors.descriptionHero}>
                      <FormLabel>Deskripsi</FormLabel>
                      <Input type="text" variant="outline" {...register('descriptionHero')} />
+                     <FormErrorMessage>
+                        {errors.descriptionHero && errors.descriptionHero.message}
+                     </FormErrorMessage>
+                  </FormControl>
+               </VStack>
+               <VStack align="stretch" mb={5}>
+                  <FormControl isInvalid={!!errors.descriptionHero}>
+                     <FormLabel>Gambar</FormLabel>
+                     <Input onChange={handleImageChange} type="file" pt={1} variant="outline" />
+                     {fileImg.length > 0 && (
+                        <Box my={5}>
+                           <img src={fileImg} alt={parseObj?.options?.titleHero} />
+                        </Box>
+                     )}
                      <FormErrorMessage>
                         {errors.descriptionHero && errors.descriptionHero.message}
                      </FormErrorMessage>
