@@ -23,6 +23,7 @@ import {
    useDisclosure,
    Divider,
    useToast,
+   Center,
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { SubmitHandler } from 'react-hook-form';
@@ -33,41 +34,54 @@ import { CategoryFormSchema } from 'utils/schema/categorySchema';
 import axios from 'axios';
 import { HOST } from 'utils/Host';
 import { mutate } from 'swr';
+import { TfiGallery } from 'react-icons/tfi';
+import useRemoteWebsite from 'hooks/remote/useRemoteWebsite';
 
-const DashboardCreateNewCategory = () => {
+const DashboardCreateNewGallery = () => {
    const { isOpen, onOpen, onClose } = useDisclosure();
+   const { data } = useRemoteWebsite();
    const [loading, setLoading] = useState(false);
+   const [image, setImage] = useState<string | Blob>();
+   const [fileImg, setFileImg] = useState('');
+
    const toast = useToast();
-   const { register, handleSubmit, reset, control } = useForm<CategoryFormValues>({
-      resolver: yupResolver(CategoryFormSchema),
-   });
-   const { errors } = useFormState({ control });
+
+   const parseObj = data && JSON.parse(data?.content as string);
+   console.log(parseObj?.gallery);
 
    const onModalClose = () => {
       onClose();
-      reset();
    };
 
-   const onSubmit: SubmitHandler<CategoryFormValues> = (values) => {
+   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      e.preventDefault();
+      if (e.target.files && e.target.files.length > 0) {
+         setImage(e.target.files[0]);
+      } else {
+         setImage(undefined);
+      }
+   };
+
+   const onSubmit = () => {
       setLoading(true);
+
+      const formData = new FormData();
+      if (image) {
+         formData.append('file', image);
+         formData.append('content', JSON.stringify(parseObj));
+      }
+
       axios
-         .post(
-            `${HOST as string}/admin/category`,
-            {
-               title_category: values.title,
+         .put(`${HOST as string}/user/website/gallery`, formData, {
+            headers: {
+               Authorization: `Bearer ${localStorage.getItem('xtoken') as string}`,
             },
-            {
-               headers: {
-                  Authorization: `Bearer ${localStorage.getItem('xtoken') as string}`,
-               },
-            },
-         )
+         })
          .then((data) => {
             setLoading(false);
             if (data && data.data.status) {
-               mutate('/admin/category');
-               onClose();
-               reset();
+               mutate('/user/website');
+               onModalClose();
             } else {
                toast({
                   title: 'Terjadi Kesalahan',
@@ -96,7 +110,7 @@ const DashboardCreateNewCategory = () => {
                   status: 'error',
                   duration: 9000,
                   isClosable: true,
-                  position: 'top-right',
+                  position: 'bottom',
                });
             }
          });
@@ -104,30 +118,41 @@ const DashboardCreateNewCategory = () => {
 
    return (
       <>
-         <HStack>
-            <Text fontSize="24" fontWeight="semibold">
-               Kategori
-            </Text>
-            <Spacer />
-            <Button
-               rounded="md"
-               leftIcon={<Icon as={IoAdd} fontSize="xl" />}
-               variant="outline"
-               onClick={onOpen}
-               px="4"
-               colorScheme="blue"
-            >
-               Tambah kategori baru
-            </Button>
-         </HStack>
+         <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            alignContent="center"
+            w="100%"
+            p={{ base: 1, md: 2 }}
+            cursor="pointer"
+            rounded="md"
+            transition="all"
+            height={200}
+            mb={5}
+            transitionDuration="300px"
+            _hover={{
+               border: '3px solid rgb(241 245 249)',
+               transform: 'scale(1.05)',
+            }}
+            onClick={onOpen}
+         >
+            <Box>
+               <Center>
+                  <TfiGallery fontSize={25} />
+               </Center>
+               <Text mt={6}>Klik untuk menambah Foto Galeri</Text>
+            </Box>
+         </Box>
+
          <Divider />
-         <Modal isOpen={isOpen} onClose={onModalClose}>
+         <Modal size="xl" isOpen={isOpen} onClose={onModalClose}>
             <ModalOverlay />
             <ModalContent>
                <Box as="form">
                   <ModalHeader>
                      <HStack>
-                        <Text>Tambah Kategori Baru</Text>
+                        <Text>Tambah Foto Galeri Baru</Text>
                         <Spacer />
                         <IconButton
                            variant="outline"
@@ -141,18 +166,26 @@ const DashboardCreateNewCategory = () => {
                   </ModalHeader>
                   <ModalBody>
                      <VStack align="stretch">
-                        <FormControl isRequired isInvalid={!!errors.title}>
-                           <FormLabel>Judul Kategori</FormLabel>
-                           <Input type="text" variant="outline" {...register('title')} />
-                           <FormErrorMessage>
-                              {errors.title && errors.title.message}
-                           </FormErrorMessage>
+                        <FormControl isRequired>
+                           {/* <FormLabel>Gambar</FormLabel> */}
+                           <Input
+                              onChange={handleImageChange}
+                              type="file"
+                              pt={1}
+                              variant="outline"
+                           />
+                           <FormHelperText>
+                              klik chose file untuk memilih gambar gallery
+                           </FormHelperText>
+                           {/* <FormErrorMessage> */}
+                           {/* {errors.title && errors.title.message} */}
+                           {/* </FormErrorMessage> */}
                         </FormControl>
                      </VStack>
                   </ModalBody>
                   <ModalFooter gap={4}>
                      <Button
-                        onClick={onModalClose}
+                        onClick={onClose}
                         variant="outline"
                         colorScheme="blue"
                         width={150}
@@ -161,7 +194,7 @@ const DashboardCreateNewCategory = () => {
                         Batal
                      </Button>
                      <Button
-                        onClick={handleSubmit(onSubmit)}
+                        onClick={onSubmit}
                         colorScheme="blue"
                         width={150}
                         type="submit"
@@ -178,4 +211,4 @@ const DashboardCreateNewCategory = () => {
    );
 };
 
-export default DashboardCreateNewCategory;
+export default DashboardCreateNewGallery;

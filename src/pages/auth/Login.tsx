@@ -64,7 +64,7 @@ const Login = () => {
                   description: 'Anda berhasil masuk akun',
                   status: 'success',
                   isClosable: true,
-                  position: 'top-right',
+                  position: 'bottom',
                });
                dispatch(login(data.data.results.payload));
                if (data.data.results.authorize === 'admin') {
@@ -78,7 +78,7 @@ const Login = () => {
                   description: data.data.message,
                   status: 'error',
                   isClosable: true,
-                  position: 'top-right',
+                  position: 'bottom',
                });
             }
          })

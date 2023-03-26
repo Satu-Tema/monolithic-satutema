@@ -14,6 +14,7 @@ import ThemeEditor from 'pages/admin/theme/ThemeEditor';
 import SettingDashboard from 'pages/user/setting';
 import FeatureDashboard from 'pages/user/feature';
 import TestimonyDashboard from 'pages/user/testimony';
+import GalleryDashboard from 'pages/user/gallery';
 
 const AdminRoute = [
    {
@@ -50,6 +51,10 @@ const UserRoute = [
    {
       path: 'user/testimony',
       component: <TestimonyDashboard />,
+   },
+   {
+      path: 'user/gallery',
+      component: <GalleryDashboard />,
    },
 ];
 
