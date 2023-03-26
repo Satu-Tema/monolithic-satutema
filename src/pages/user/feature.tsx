@@ -30,6 +30,8 @@ import { FeatureFormSchema } from 'utils/schema/featureSchema';
 const FeatureDashboard = () => {
    const toast = useToast();
    const { data } = useRemoteWebsite();
+   const [image, setImage] = useState<string | Blob>();
+   const [fileImg, setFileImg] = useState('');
 
    const parseObj = data && JSON.parse(data?.content as string);
 
@@ -39,6 +41,16 @@ const FeatureDashboard = () => {
    const { errors } = useFormState({ control });
 
    const [loading, setLoading] = useState(false);
+
+   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      e.preventDefault();
+      if (e.target.files && e.target.files.length > 0) {
+         setImage(e.target.files[0]);
+      } else {
+         setImage(undefined);
+      }
+   };
+
    const onSubmit: SubmitHandler<FeatureFormValues> = (values) => {
       setLoading(true);
       const obj = {
@@ -48,19 +60,18 @@ const FeatureDashboard = () => {
             description: values.description,
          },
       };
+      const formData = new FormData();
+      if (image) {
+         formData.append('file', image);
+         formData.append('content', JSON.stringify(obj));
+      }
 
       axios
-         .put(
-            `${HOST as string}/user/website`,
-            {
-               content: JSON.stringify(obj),
+         .put(`${HOST as string}/user/website/feature`, formData, {
+            headers: {
+               Authorization: `Bearer ${localStorage.getItem('xtoken') as string}`,
             },
-            {
-               headers: {
-                  Authorization: `Bearer ${localStorage.getItem('xtoken') as string}`,
-               },
-            },
-         )
+         })
          .then((data) => {
             setLoading(false);
             if (data && data.data.status) {
@@ -103,6 +114,7 @@ const FeatureDashboard = () => {
       if (data) {
          setValue('title', parseObj?.feature?.title);
          setValue('description', parseObj?.feature?.description);
+         setFileImg(parseObj?.feature?.imageFeature);
       }
    }, [data]);
    return (
@@ -137,6 +149,17 @@ const FeatureDashboard = () => {
                      <FormErrorMessage>
                         {errors.description && errors.description.message}
                      </FormErrorMessage>
+                  </FormControl>
+               </VStack>
+               <VStack align="stretch" mb={5}>
+                  <FormControl>
+                     <FormLabel>Gambar</FormLabel>
+                     <Input onChange={handleImageChange} type="file" pt={1} variant="outline" />
+                     {fileImg?.length > 0 && (
+                        <Box my={5}>
+                           <img src={fileImg} alt={parseObj?.feature?.title} />
+                        </Box>
+                     )}
                   </FormControl>
                </VStack>
 
