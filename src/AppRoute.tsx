@@ -15,6 +15,8 @@ import SettingDashboard from 'pages/user/setting';
 import FeatureDashboard from 'pages/user/feature';
 import TestimonyDashboard from 'pages/user/testimony';
 import GalleryDashboard from 'pages/user/gallery';
+import ProductDashboard from 'pages/user/product';
+import ChoseTheme from 'pages/user/chosetheme';
 
 const AdminRoute = [
    {
@@ -55,6 +57,14 @@ const UserRoute = [
    {
       path: 'user/gallery',
       component: <GalleryDashboard />,
+   },
+   {
+      path: 'user/product',
+      component: <ProductDashboard />,
+   },
+   {
+      path: 'user/theme',
+      component: <ChoseTheme />,
    },
 ];
 

@@ -23,7 +23,8 @@ import {
    useDisclosure,
    Divider,
    useToast,
-   Select,
+   Heading,
+   useColorModeValue,
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { SubmitHandler } from 'react-hook-form';
@@ -34,50 +35,83 @@ import { CategoryFormSchema } from 'utils/schema/categorySchema';
 import axios from 'axios';
 import { HOST } from 'utils/Host';
 import { mutate } from 'swr';
-import useRemoteCategoryOption from 'hooks/remote/useRemoteCategoryOption';
-import { ThemeFormValues } from 'ts/schema/themeSchema';
-import { ThemeRemoteDataType } from 'ts/Theme';
+import { ProductFormValues } from 'ts/schema/productSchema';
+import { ProductFormSchema } from 'utils/schema/productSchema';
+import useRemoteWebsite from 'hooks/remote/useRemoteWebsite';
 
-const DashboardCreateNewTheme = () => {
+const DashboardCreateNewProduct = () => {
    const { isOpen, onOpen, onClose } = useDisclosure();
    const [loading, setLoading] = useState(false);
+   const [image, setImage] = useState<string | Blob>();
    const toast = useToast();
-   const { register, handleSubmit, reset, control } = useForm<ThemeFormValues>({
-      resolver: yupResolver(CategoryFormSchema),
+   const { register, handleSubmit, reset, control } = useForm<ProductFormValues>({
+      resolver: yupResolver(ProductFormSchema),
    });
    const { errors } = useFormState({ control });
+   const { data } = useRemoteWebsite();
 
-   const { data } = useRemoteCategoryOption();
+   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      e.preventDefault();
+      if (e.target.files && e.target.files.length > 0) {
+         setImage(e.target.files[0]);
+      } else {
+         setImage(undefined);
+      }
+   };
 
+   const parseObj = data && JSON.parse(data.content as string);
+   console.log(parseObj && parseObj);
    const onModalClose = () => {
       onClose();
       reset();
    };
 
-   const onSubmit: SubmitHandler<ThemeFormValues> = (values) => {
-      console.log(values);
+   const onSubmit: SubmitHandler<ProductFormValues> = (values) => {
       setLoading(true);
-      axios
-         .post(
-            `${HOST as string}/admin/theme/themename`,
-            {
-               theme_name: values.title,
-               category: values.category,
-            },
-            {
-               headers: {
-                  Authorization: `Bearer ${localStorage.getItem('xtoken') as string}`,
+      let obj = {};
+      if (parseObj?.product) {
+         obj = {
+            ...parseObj,
+            product: [
+               ...parseObj?.product,
+               {
+                  title: values.title,
+                  description: values.description,
+                  imageProduct: '',
                },
+            ],
+         };
+      } else {
+         obj = {
+            ...parseObj,
+            product: [
+               {
+                  title: values.title,
+                  description: values.description,
+                  imageProduct: '',
+               },
+            ],
+         };
+      }
+
+      const formData = new FormData();
+      if (image) {
+         formData.append('file', image);
+         formData.append('content', JSON.stringify(obj));
+      }
+
+      axios
+         .put(`${HOST as string}/user/website/product`, formData, {
+            headers: {
+               Authorization: `Bearer ${localStorage.getItem('xtoken') as string}`,
             },
-         )
+         })
          .then((data) => {
             setLoading(false);
+            reset();
             if (data && data.data.status) {
-               mutate('/theme');
+               mutate('/user/website');
                onClose();
-               setTimeout(() => {
-                  reset();
-               }, 1000);
             } else {
                toast({
                   title: 'Terjadi Kesalahan',
@@ -111,13 +145,18 @@ const DashboardCreateNewTheme = () => {
             }
          });
    };
-
    return (
       <>
          <HStack>
-            <Text fontSize="24" fontWeight="semibold">
-               Tema
-            </Text>
+            <Heading
+               fontFamily={'Work Sans'}
+               fontWeight={'bold'}
+               color={useColorModeValue('gray.700', 'gray.50')}
+               //   textAlign="center"
+               my={6}
+            >
+               Produk
+            </Heading>
             <Spacer />
             <Button
                rounded="md"
@@ -127,7 +166,7 @@ const DashboardCreateNewTheme = () => {
                px="4"
                colorScheme="blue"
             >
-               Tambah Tema baru
+               Tambah Produk baru
             </Button>
          </HStack>
          <Divider />
@@ -137,7 +176,7 @@ const DashboardCreateNewTheme = () => {
                <Box as="form">
                   <ModalHeader>
                      <HStack>
-                        <Text>Tambah Tema Baru</Text>
+                        <Text>Tambah Produk Baru</Text>
                         <Spacer />
                         <IconButton
                            variant="outline"
@@ -151,31 +190,39 @@ const DashboardCreateNewTheme = () => {
                   </ModalHeader>
                   <ModalBody>
                      <VStack align="stretch">
+                        <FormControl>
+                           <FormLabel>Foto Produk</FormLabel>
+                           <Input
+                              // pb={2}
+                              type="file"
+                              accept="image/*"
+                              variant="outline"
+                              onChange={handleImageChange}
+                           />
+                        </FormControl>
+                     </VStack>
+                     <VStack align="stretch">
                         <FormControl isRequired isInvalid={!!errors.title}>
-                           <FormLabel>Judul Tema</FormLabel>
+                           <FormLabel>Nama Produk</FormLabel>
                            <Input type="text" variant="outline" {...register('title')} />
                            <FormErrorMessage>
                               {errors.title && errors.title.message}
                            </FormErrorMessage>
                         </FormControl>
-                        <FormControl isRequired isInvalid={!!errors.category}>
-                           <FormLabel>Kategori</FormLabel>
-                           <Select {...register('category')} textTransform="capitalize">
-                              {data?.map((el, i) => (
-                                 <option key={i} value={el.value}>
-                                    {el.label}
-                                 </option>
-                              ))}
-                           </Select>
+                     </VStack>
+                     <VStack align="stretch">
+                        <FormControl isRequired isInvalid={!!errors.title}>
+                           <FormLabel>Deskripsi</FormLabel>
+                           <Input type="text" variant="outline" {...register('description')} />
                            <FormErrorMessage>
-                              {errors.category && errors.category.message}
+                              {errors.description && errors.description.message}
                            </FormErrorMessage>
                         </FormControl>
                      </VStack>
                   </ModalBody>
                   <ModalFooter gap={4}>
                      <Button
-                        onClick={onClose}
+                        onClick={onModalClose}
                         variant="outline"
                         colorScheme="blue"
                         width={150}
@@ -201,4 +248,4 @@ const DashboardCreateNewTheme = () => {
    );
 };
 
-export default DashboardCreateNewTheme;
+export default DashboardCreateNewProduct;

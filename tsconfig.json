@@ -4,7 +4,8 @@
     "lib": [
       "dom",
       "dom.iterable",
-      "esnext"
+      "esnext",
+      "ES5", "ES2015", "ES2016", "ES2015.Promise"
     ],
     "allowJs": true,
     "skipLibCheck": true,

@@ -17,21 +17,21 @@ function generateSidebarItemsAdmin(): DashboardSidebarNavItem[] {
          path: '/admin/theme',
          icon: FaLaptopCode,
       },
-      {
-         name: 'Pengaturan',
-         path: '/',
-         icon: FiSettings,
-         sub: [
-            {
-               name: 'Pengaturan Sistem',
-               path: '/admin/system-settings',
-            },
-            {
-               name: 'Pengaturan Website',
-               path: '/admin/frontend-settings',
-            },
-         ],
-      },
+      // {
+      //    name: 'Pengaturan',
+      //    path: '/',
+      //    icon: FiSettings,
+      //    sub: [
+      //       {
+      //          name: 'Pengaturan Sistem',
+      //          path: '/admin/system-settings',
+      //       },
+      //       {
+      //          name: 'Pengaturan Website',
+      //          path: '/admin/frontend-settings',
+      //       },
+      //    ],
+      // },
    ];
 }
 

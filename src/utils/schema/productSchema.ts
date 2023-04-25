@@ -1,9 +1,7 @@
-import { CreateWebsiteFormValues } from 'ts/schema/createWebsiteSchema';
+import { ProductFormValues } from 'ts/schema/productSchema';
 import * as Yup from 'yup';
 
-export const CreateWebsiteFormSchema: Yup.SchemaOf<CreateWebsiteFormValues> = Yup.object().shape({
+export const ProductFormSchema: Yup.SchemaOf<ProductFormValues> = Yup.object().shape({
   title: Yup.string().required(),
   description: Yup.string().required(),
-  address: Yup.string().required(),
-  meta: Yup.string().required()
 });`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                `

@@ -104,33 +104,6 @@ const Menu1 = () => {
             gap={5}
             maxW="full"
          >
-            <Box
-               bg="#F2EFEF"
-               minH="80vh"
-               gap={10}
-               minW={{ base: 'auto', md: '20%' }}
-               w="full"
-               p={5}
-               textAlign="center"
-               rounded="md"
-            >
-               {['Main Menu', 'Menu Hampers', 'Menu Prasmanan'].map((el, i) => (
-                  <Box
-                     key={i}
-                     onClick={() => onActiveMenu(el)}
-                     minW="full"
-                     rounded="full"
-                     mb={8}
-                     p={3}
-                     cursor="pointer"
-                     border={`${activeMenu !== el ? '1px solid blue' : ''}`}
-                     color={`${activeMenu !== el ? 'black' : 'white'}`}
-                     background={`${activeMenu !== el ? '' : 'blue'}`}
-                  >
-                     {el}
-                  </Box>
-               ))}
-            </Box>
             <Box bg="#F2EFEF" minH="fit-content" minW="80%" textAlign="center" rounded="md" pt={5}>
                <Flex
                   flexWrap="wrap"
@@ -139,40 +112,14 @@ const Menu1 = () => {
                   ml={5}
                   gap={5}
                >
-                  {activeMenu === 'Main Menu' ? (
-                     <>
-                        {Data.main.map((el, i) => (
-                           <MenuCard
-                              key={el.title}
-                              title={el.title}
-                              description={el.description}
-                              image={el.image}
-                           />
-                        ))}
-                     </>
-                  ) : activeMenu === 'Menu Hampers' ? (
-                     <>
-                        {Data.hampers.map((el, i) => (
-                           <MenuCard
-                              key={el.title}
-                              title={el.title}
-                              description={el.description}
-                              image={el.image}
-                           />
-                        ))}
-                     </>
-                  ) : (
-                     <>
-                        {Data.prasmanan.map((el, i) => (
-                           <MenuCard
-                              key={el.title}
-                              title={el.title}
-                              description={el.description}
-                              image={el.image}
-                           />
-                        ))}
-                     </>
-                  )}
+                  {Data.main.map((el, i) => (
+                     <MenuCard
+                        key={el.title}
+                        title={el.title}
+                        description={el.description}
+                        image={el.image}
+                     />
+                  ))}
                </Flex>
             </Box>
          </Flex>

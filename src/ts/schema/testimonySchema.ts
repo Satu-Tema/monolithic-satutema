@@ -1,5 +1,5 @@
 export type TestimonyFormValues = {
-  title: string;
-  subTitle: string;
+  name: string;
+  jobs: string;
   description: string;
 };

@@ -14,6 +14,15 @@ import {
    Heading,
    useColorModeValue,
    useToast,
+   Table,
+   Thead,
+   Tr,
+   Th,
+   Tbody,
+   Td,
+   Textarea,
+   Avatar,
+   TableContainer,
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import axios from 'axios';
@@ -28,41 +37,57 @@ import { TestimonyFormSchema } from 'utils/schema/testimonySchema';
 
 const TestimonyDashboard = () => {
    const toast = useToast();
+   const [image, setImage] = useState<string | Blob>();
    const { data } = useRemoteWebsite();
 
    const parseObj = data && JSON.parse(data?.content as string);
 
-   const { register, handleSubmit, control, setValue } = useForm<TestimonyFormValues>({
+   const { register, handleSubmit, control, reset } = useForm<TestimonyFormValues>({
       resolver: yupResolver(TestimonyFormSchema),
    });
    const { errors } = useFormState({ control });
 
    const [loading, setLoading] = useState(false);
+
+   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      e.preventDefault();
+      if (e.target.files && e.target.files.length > 0) {
+         setImage(e.target.files[0]);
+      } else {
+         setImage(undefined);
+      }
+   };
+
    const onSubmit: SubmitHandler<TestimonyFormValues> = (values) => {
       setLoading(true);
       const obj = {
          ...parseObj,
-         testimony: {
-            title: values.title,
-            subTitle: values.subTitle,
-            description: values.description,
-         },
+         testimony: [
+            ...parseObj.testimony,
+            {
+               name: values.name,
+               jobs: values.jobs,
+               description: values.description,
+               imageTestimony: '',
+            },
+         ],
       };
+      const formData = new FormData();
+      if (image) {
+         formData.append('file', image);
+         formData.append('content', JSON.stringify(obj));
+      }
 
       axios
-         .put(
-            `${HOST as string}/user/website`,
-            {
-               content: JSON.stringify(obj),
+         .put(`${HOST as string}/user/website/testimony`, formData, {
+            headers: {
+               Authorization: `Bearer ${localStorage.getItem('xtoken') as string}`,
             },
-            {
-               headers: {
-                  Authorization: `Bearer ${localStorage.getItem('xtoken') as string}`,
-               },
-            },
-         )
+         })
          .then((data) => {
             setLoading(false);
+            reset();
+            setImage('');
             if (data && data.data.status) {
                mutate('/user/website');
             } else {
@@ -99,13 +124,6 @@ const TestimonyDashboard = () => {
          });
    };
 
-   useEffect(() => {
-      if (data) {
-         setValue('title', parseObj?.testimony?.title);
-         setValue('subTitle', parseObj?.testimony?.subTitle);
-         setValue('description', parseObj?.testimony?.description);
-      }
-   }, [data]);
    return (
       <DashboardLayoutUser sidebarFor="user">
          <VStack align="stretch" py="4">
@@ -125,25 +143,29 @@ const TestimonyDashboard = () => {
                   Testimoni
                </Heading>
                <VStack align="stretch" mb={5}>
-                  <FormControl isInvalid={!!errors.title}>
-                     <FormLabel>Judul</FormLabel>
-                     <Input type="text" variant="outline" {...register('title')} />
-                     <FormErrorMessage>{errors.title && errors.title.message}</FormErrorMessage>
+                  <FormControl>
+                     <FormLabel>Foto</FormLabel>
+                     <Input onChange={handleImageChange} type="file" pt={1} variant="outline" />
                   </FormControl>
                </VStack>
                <VStack align="stretch" mb={5}>
-                  <FormControl isInvalid={!!errors.subTitle}>
-                     <FormLabel>Sub Judul</FormLabel>
-                     <Input type="text" variant="outline" {...register('subTitle')} />
-                     <FormErrorMessage>
-                        {errors.subTitle && errors.subTitle.message}
-                     </FormErrorMessage>
+                  <FormControl isInvalid={!!errors.name}>
+                     <FormLabel>Nama</FormLabel>
+                     <Input type="text" variant="outline" {...register('name')} />
+                     <FormErrorMessage>{errors.name && errors.name.message}</FormErrorMessage>
+                  </FormControl>
+               </VStack>
+               <VStack align="stretch" mb={5}>
+                  <FormControl isInvalid={!!errors.jobs}>
+                     <FormLabel>Pekerjaan</FormLabel>
+                     <Input type="text" variant="outline" {...register('jobs')} />
+                     <FormErrorMessage>{errors.jobs && errors.jobs.message}</FormErrorMessage>
                   </FormControl>
                </VStack>
                <VStack align="stretch" mb={5}>
                   <FormControl isInvalid={!!errors.description}>
                      <FormLabel>Deskripsi</FormLabel>
-                     <Input type="text" variant="outline" {...register('description')} />
+                     <Textarea size="md" variant="outline" {...register('description')} />
                      <FormErrorMessage>
                         {errors.description && errors.description.message}
                      </FormErrorMessage>
@@ -155,6 +177,34 @@ const TestimonyDashboard = () => {
                      Simpan
                   </Button>
                </VStack>
+               <TableContainer>
+                  <Table variant="striped" mt={5}>
+                     <Thead>
+                        <Tr fontSize="lg">
+                           <Th>Foto</Th>
+                           <Th>Nama</Th>
+                           <Th>Pekerjaan</Th>
+                           <Th>Deskripsi</Th>
+                           <Th textAlign="center">Aksi</Th>
+                        </Tr>
+                     </Thead>
+                     <Tbody>
+                        {parseObj?.testimony?.map((el: any, index: number) => (
+                           <Tr key={index}>
+                              <Td>
+                                 <Avatar name={el.name} src={el.imageTestimony} />
+                              </Td>
+                              <Td>{el.name}</Td>
+                              <Td>{el.jobs}</Td>
+                              <Td>{el.description}</Td>
+                              <Td>
+                                 <Button colorScheme="red">Hapus</Button>
+                              </Td>
+                           </Tr>
+                        ))}
+                     </Tbody>
+                  </Table>
+               </TableContainer>
             </Container>
          </VStack>
       </DashboardLayoutUser>

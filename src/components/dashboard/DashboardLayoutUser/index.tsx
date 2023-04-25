@@ -23,7 +23,7 @@ const DashboardLayoutUser = ({ sidebarFor, children }: DashboardLayoutProps) => 
          <DashboardNavbarUser />
          <Flex overflow="hidden">
             <DashboardSidebarUser items={generateSidebarItemsUsers()} />
-            <Box mr={4} flexGrow={1} minH="50vh">
+            <Box mr={4} ml={{ base: 4, md: 0 }} flexGrow={1} minH="50vh" maxW="100%">
                {children}
             </Box>
          </Flex>

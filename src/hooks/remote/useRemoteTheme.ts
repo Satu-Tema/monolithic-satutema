@@ -5,7 +5,7 @@ import { GetThemeResponse } from 'ts/Theme';
 import themeDataMapper from 'utils/mapper/themeDataMapper';
 
 const useRemoteTheme = () => {
-  const uri = `/admin/theme`;
+  const uri = `/theme`;
   const { data, ...others } = useSwr<GetThemeResponse>(uri);
   
   const transformData = useCallback((data: GetThemeResponse) => {
