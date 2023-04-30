@@ -316,13 +316,13 @@ const ThemeEditor = () => {
                </Heading>
             </Box> */}
             <Flex gap={5}>
-               <Button
+               {/* <Button
                   colorScheme="blue"
                   variant="solid"
                   // onClick={() => navigate('/auth/register')}
                >
                   Publikasi
-               </Button>
+               </Button> */}
                <Button colorScheme="blue" variant="solid" onClick={onSubmit} isLoading={loading}>
                   Simpan
                </Button>

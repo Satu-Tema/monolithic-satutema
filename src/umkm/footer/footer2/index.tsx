@@ -57,13 +57,7 @@ const SocialButton = ({
    );
 };
 
-interface IFooter {
-   instagram?: string;
-   twitter?: string;
-   youtube?: string;
-}
-
-export default function Footer2({ instagram, twitter, youtube }: IFooter) {
+export default function Footer2() {
    return (
       <Box
       //  bg={useColorModeValue('gray.50', 'gray.900')}
@@ -79,15 +73,15 @@ export default function Footer2({ instagram, twitter, youtube }: IFooter) {
             align={{ base: 'center', md: 'center' }}
          >
             <Logo />
-            <Text>© 2023 Satu Tema. All rights reserved</Text>
+            <Text>© 2022 Chakra Templates. All rights reserved</Text>
             <Stack direction={'row'} spacing={6}>
-               <SocialButton label={'Twitter'} href={twitter ?? '#'}>
+               <SocialButton label={'Twitter'} href={'#'}>
                   <FaTwitter />
                </SocialButton>
-               <SocialButton label={'YouTube'} href={youtube ?? '#'}>
+               <SocialButton label={'YouTube'} href={'#'}>
                   <FaYoutube />
                </SocialButton>
-               <SocialButton label={'Instagram'} href={instagram ?? '#'}>
+               <SocialButton label={'Instagram'} href={'#'}>
                   <FaInstagram />
                </SocialButton>
             </Stack>

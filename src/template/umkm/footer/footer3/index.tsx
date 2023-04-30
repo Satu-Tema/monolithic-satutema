@@ -58,7 +58,12 @@ const SocialButton = ({
    );
 };
 
-export default function Footer3() {
+interface IFooter {
+   instagram?: string;
+   twitter?: string;
+   youtube?: string;
+}
+export default function Footer3({ instagram, twitter, youtube }: IFooter) {
    return (
       <Box
       //  bg={useColorModeValue('gray.50', 'gray.900')}
@@ -67,10 +72,9 @@ export default function Footer3() {
          <Container as={Stack} maxW={'6xl'} py={4} spacing={4} justify={'center'} align={'center'}>
             <Logo />
             <Stack direction={'row'} spacing={6}>
-               <Link href={'#'}>Home</Link>
-               <Link href={'#'}>About</Link>
-               <Link href={'#'}>Blog</Link>
-               <Link href={'#'}>Contact</Link>
+               <Link href={'#hero'}>Home</Link>
+               <Link href={'#fitur'}>Fitur</Link>
+               <Link href={'#menu'}>Menu</Link>
             </Stack>
          </Container>
 
@@ -88,15 +92,15 @@ export default function Footer3() {
                justify={{ base: 'center', md: 'space-between' }}
                align={{ base: 'center', md: 'center' }}
             >
-               <Text>© 2022 Chakra Templates. All rights reserved</Text>
+               <Text>© 2023 Satu Tema. All rights reserved</Text>
                <Stack direction={'row'} spacing={6}>
-                  <SocialButton label={'Twitter'} href={'#'}>
+                  <SocialButton label={'Twitter'} href={twitter ?? '#'}>
                      <FaTwitter />
                   </SocialButton>
-                  <SocialButton label={'YouTube'} href={'#'}>
+                  <SocialButton label={'YouTube'} href={youtube ?? '#'}>
                      <FaYoutube />
                   </SocialButton>
-                  <SocialButton label={'Instagram'} href={'#'}>
+                  <SocialButton label={'Instagram'} href={instagram ?? '#'}>
                      <FaInstagram />
                   </SocialButton>
                </Stack>

@@ -19,7 +19,7 @@ import { IoMdMenu } from 'react-icons/io';
 import { Link } from 'react-router-dom';
 import generateSidebarItemsUsers from 'utils/generatedata/sidebar/sidebarItems/users';
 
-const Navbar3 = ({ logo }: { logo?: string }) => {
+const Navbar3 = () => {
    const { isOpen, onOpen, onClose } = useDisclosure();
    const btnRef = useRef<HTMLButtonElement>(null);
 
@@ -34,7 +34,7 @@ const Navbar3 = ({ logo }: { logo?: string }) => {
       >
          {/* Left */}
          <Box cursor="pointer">
-            <Heading>{logo ?? 'Logo'}</Heading>
+            <Heading>Logo</Heading>
          </Box>
 
          {/* Mid */}
@@ -45,13 +45,16 @@ const Navbar3 = ({ logo }: { logo?: string }) => {
             <Link to="/#tentang">
                <Text>Tentang</Text>
             </Link>
+            <Link to="/#outleet">
+               <Text>Outleet</Text>
+            </Link>
             <Link to="/#menu">
                <Text>Menu</Text>
             </Link>
             <Link to="/#galeri">
                <Text>Galleri</Text>
             </Link>
-            <Link to="/#testimoni">
+            <Link to="/testimoni">
                <Text>Testimoni</Text>
             </Link>
          </Flex>
