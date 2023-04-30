@@ -15,6 +15,7 @@ import {
 import { useDashboard } from 'context/DashboardProvider';
 import { FiMenu } from 'react-icons/fi';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { logout } from 'redux/userSlice';
 
 const DashboardNavbarUser = () => {
@@ -44,16 +45,18 @@ const DashboardNavbarUser = () => {
          }}
       >
          <HStack justifyContent="space-between" alignItems="center" flexGrow={1}>
-            <Box display={{ base: 'none', md: 'block' }}>
-               <img
-                  loading="lazy"
-                  alt="Satu Tema"
-                  src={`${process.env.PUBLIC_URL}/images/satutema.png`}
-                  style={{ objectFit: 'cover' }}
-                  width={150}
-                  height={100}
-               />
-            </Box>
+            <Link to="/">
+               <Box display={{ base: 'none', md: 'block' }}>
+                  <img
+                     loading="lazy"
+                     alt="Satu Tema"
+                     src={`${process.env.PUBLIC_URL}/images/satutema.png`}
+                     style={{ objectFit: 'cover' }}
+                     width={150}
+                     height={100}
+                  />
+               </Box>
+            </Link>
             <IconButton
                icon={<FiMenu />}
                variant="solid-alt"

@@ -30,7 +30,8 @@ const Login = () => {
    const [loading, setLoading] = useState(false);
 
    if (user.isAuth) {
-      return <Navigate to="/user" replace />;
+      if (user.value.authorize === 'admin') return <Navigate to="/admin" replace />;
+      else return <Navigate to="/user" replace />;
    }
 
    const {
