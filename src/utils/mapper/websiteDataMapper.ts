@@ -11,7 +11,8 @@ const websiteDataMapper: WebsiteDataMapperType = {
       content: website.content,
       isWebsite: website.is_website,
       themeId: website.theme_id,
-      websiteName: website.website_name
+      websiteName: website.website_name,
+      slug: website.slug
   }),
   toLocalMainList: (websites) => websites.map((web) => websiteDataMapper.toLocalMain(web)),
 };

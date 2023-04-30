@@ -4,6 +4,7 @@ export type WebsiteRemoteDataType = {
     is_website: boolean;
     website_name: string;
     content: string;
+    slug: string;
 };
   
 export type WebsiteType = {
@@ -11,7 +12,8 @@ export type WebsiteType = {
     themeId: string;
     isWebsite: boolean;
     websiteName: string;
-    content: string
+    content: string;
+    slug: string;
 }
 
 export type WebsiteRemoteData = WebsiteRemoteDataType[]

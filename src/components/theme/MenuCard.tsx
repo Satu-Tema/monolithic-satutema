@@ -24,8 +24,8 @@ const MenuCard = ({ title, description, image }: IMenuCard) => {
       >
          <Box mt={5}>
             <Image
-               height={150}
-               width={180}
+               height={90}
+               width={{ base: 90, md: 200 }}
                objectFit="cover"
                rounded="full"
                src={image}

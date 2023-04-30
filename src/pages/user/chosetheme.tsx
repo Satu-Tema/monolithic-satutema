@@ -119,7 +119,12 @@ const ChoseTheme = () => {
                                  <Button onClick={() => onHandleOpenEdit(el)} colorScheme="blue">
                                     Pilih Tema
                                  </Button>
-                                 <Button colorScheme="blue">Lihat</Button>
+                                 <Button
+                                    colorScheme="blue"
+                                    onClick={() => window.open(`/preview/${el.id}`, '_blank')}
+                                 >
+                                    Lihat
+                                 </Button>
                               </ButtonGroup>
                            )}
                         </CardFooter>

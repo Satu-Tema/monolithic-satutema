@@ -34,7 +34,7 @@ const Navbar3 = ({ logo }: { logo?: string }) => {
       >
          {/* Left */}
          <Box cursor="pointer">
-            <Heading>{logo ?? 'Logo'}</Heading>
+            <Heading size="lg">{logo ?? 'Logo'}</Heading>
          </Box>
 
          {/* Mid */}

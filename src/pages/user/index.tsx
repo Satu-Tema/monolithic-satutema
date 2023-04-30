@@ -1,4 +1,14 @@
-import { Box, Button, Container, VStack, Text, Center, Flex, Icon } from '@chakra-ui/react';
+import {
+   Box,
+   Button,
+   Container,
+   VStack,
+   Text,
+   Center,
+   Flex,
+   Icon,
+   LinkOverlay,
+} from '@chakra-ui/react';
 import DashboardLayoutUser from 'components/dashboard/DashboardLayoutUser';
 import useRemoteWebsite from 'hooks/remote/useRemoteWebsite';
 import { useNavigate } from 'react-router-dom';
@@ -8,13 +18,23 @@ const UserDashboard = () => {
    const navigate = useNavigate();
    const { data } = useRemoteWebsite();
 
+   console.log(data);
+
    return (
       <DashboardLayoutUser sidebarFor="user">
          <VStack align="stretch" py="4">
             <Container maxW="container.lg">
-               <Button variant="outline" colorScheme="blue" w="full">
-                  Lihat Website
-               </Button>
+               {data && (
+                  <Button
+                     onClick={() => window.open(`/${data.slug}`, '_blank')}
+                     variant="outline"
+                     colorScheme="blue"
+                     w="full"
+                  >
+                     Lihat Website
+                  </Button>
+               )}
+
                <Box
                   w="full"
                   transitionProperty="min-width, width"

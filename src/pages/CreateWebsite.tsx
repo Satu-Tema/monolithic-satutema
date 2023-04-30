@@ -43,11 +43,15 @@ const CreateWebsite = () => {
 
    const onSubmit: SubmitHandler<CreateWebsiteFormValues> = (values) => {
       const obj = {
+         feature: {},
+         gallery: [],
          options: {
             address: values.address,
             description: values.description,
             meta: values.meta,
          },
+         product: [],
+         testimony: [],
       };
 
       setLoading(true);

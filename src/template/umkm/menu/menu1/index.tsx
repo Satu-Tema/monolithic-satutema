@@ -18,6 +18,11 @@ const Data = {
          description: '1 Box berisi 2 mini zupa dan 2 mini lasagna',
          image: `${process.env.PUBLIC_URL}/images/foodplaceholder.jpg`,
       },
+      {
+         title: 'Mini Mix',
+         description: '1 Box berisi 2 mini zupa dan 2 mini lasagna',
+         image: `${process.env.PUBLIC_URL}/images/foodplaceholder.jpg`,
+      },
    ],
 };
 
@@ -65,18 +70,27 @@ const Menu1 = ({ data }: IMenu) => {
             flexWrap={{ base: 'wrap', md: 'nowrap' }}
             justifyContent="center"
             gap={5}
-            maxW="full"
+            flex={1}
+            mb={10}
          >
-            <Box bg="#F2EFEF" minH="fit-content" minW="80%" textAlign="center" rounded="md" pt={5}>
+            <Box
+               flex={1}
+               // bg="#F2EFEF"
+               minH="fit-content"
+               minW="80%"
+               textAlign="center"
+               rounded="md"
+               pt={5}
+            >
                <Flex
                   flexWrap="wrap"
                   justifyContent="center"
                   justify={{ base: 'auto', md: 'start' }}
                   ml={5}
-                  gap={5}
+                  gap={2}
                   mr={5}
                >
-                  {data
+                  {data && data.length > 1
                      ? data.map((el, i) => (
                           <MenuCard
                              key={i}

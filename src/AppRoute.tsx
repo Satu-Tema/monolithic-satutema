@@ -17,6 +17,8 @@ import TestimonyDashboard from 'pages/user/testimony';
 import GalleryDashboard from 'pages/user/gallery';
 import ProductDashboard from 'pages/user/product';
 import ChoseTheme from 'pages/user/chosetheme';
+import Website from 'pages/user/website';
+import WebsitePreview from 'pages/user/websitepreview';
 
 const AdminRoute = [
    {
@@ -38,6 +40,14 @@ const AdminRoute = [
 ];
 
 const UserRoute = [
+   {
+      path: '/:id',
+      component: <Website />,
+   },
+   {
+      path: 'preview/:id',
+      component: <WebsitePreview />,
+   },
    {
       path: 'user',
       component: <UserDashboard />,

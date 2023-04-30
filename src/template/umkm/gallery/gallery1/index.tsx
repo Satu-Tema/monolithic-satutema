@@ -20,17 +20,15 @@ export default function Gallery1({ data = [] }: { data?: [] }) {
    return (
       <>
          <Container bg="white" minH="100" maxW="1440" p="20px 40px 30px 40px">
-            {data && data.length < 1 && (
-               <Heading
-                  fontFamily={'Work Sans'}
-                  fontWeight={'bold'}
-                  color={useColorModeValue('gray.700', 'gray.50')}
-                  textAlign="center"
-                  my={6}
-               >
-                  Gallery
-               </Heading>
-            )}
+            <Heading
+               fontFamily={'Work Sans'}
+               fontWeight={'bold'}
+               color={useColorModeValue('gray.700', 'gray.50')}
+               textAlign="center"
+               my={6}
+            >
+               Gallery
+            </Heading>
 
             <Box py="20px" w="100%" maxW="100%" mx="auto" bg="white">
                <Box display="flex" flexWrap="wrap">
