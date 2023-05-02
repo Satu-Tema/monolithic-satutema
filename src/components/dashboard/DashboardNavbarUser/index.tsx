@@ -62,6 +62,9 @@ const DashboardNavbarUser = () => {
                variant="solid-alt"
                onClick={onSidebarToggle}
                aria-label="Menu"
+               display={{ base: 'block', md: 'none' }}
+               position={{ base: 'fixed', md: 'relative' }}
+               left={4}
             />
             <Box position="fixed" right={4}>
                <Menu>

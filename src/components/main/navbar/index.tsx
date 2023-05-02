@@ -122,6 +122,7 @@ const MainNavbar = () => {
                            variant="outline"
                            _hover={{ bg: 'teal', color: '#fff' }}
                            onClick={() => navigate('/auth/register')}
+                           data-testid="register-button"
                         >
                            Buat Website
                         </Button>
@@ -130,6 +131,7 @@ const MainNavbar = () => {
                            variant="outline"
                            _hover={{ bg: 'teal', color: '#fff' }}
                            onClick={() => navigate('/auth/login')}
+                           data-testid="login-button"
                         >
                            Login
                         </Button>

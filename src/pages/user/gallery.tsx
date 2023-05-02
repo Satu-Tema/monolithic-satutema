@@ -30,7 +30,13 @@ const GalleryDashboard = () => {
                <Box display="flex" flexWrap="wrap">
                   <DashboardCreateNewGallery />
                   {parseObj?.gallery?.map((el: string, index: number) => (
-                     <Box key={index} w="50%" p={{ base: 1, md: 2 }} cursor="pointer">
+                     <Box
+                        data-testid="gallery"
+                        key={index}
+                        w="50%"
+                        p={{ base: 1, md: 2 }}
+                        cursor="pointer"
+                     >
                         <Image
                            // pb={{ base: '5.5vw', ts: '4.5vw', sm: '2vw' }}
                            w="100%"

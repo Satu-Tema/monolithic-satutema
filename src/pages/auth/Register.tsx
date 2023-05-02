@@ -124,6 +124,7 @@ const Register = () => {
                      w="full"
                      colorScheme="blue"
                      variant="solid"
+                     data-testid="register-auth-button"
                   >
                      Daftar
                   </Button>

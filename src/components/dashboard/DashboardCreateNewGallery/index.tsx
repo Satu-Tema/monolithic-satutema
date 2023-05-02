@@ -136,6 +136,7 @@ const DashboardCreateNewGallery = () => {
                transform: 'scale(1.05)',
             }}
             onClick={onOpen}
+            data-testid="button-open-modal"
          >
             <Box>
                <Center>
@@ -173,6 +174,7 @@ const DashboardCreateNewGallery = () => {
                               type="file"
                               pt={1}
                               variant="outline"
+                              data-testid="file-input"
                            />
                            <FormHelperText>
                               klik chose file untuk memilih gambar gallery
@@ -200,6 +202,7 @@ const DashboardCreateNewGallery = () => {
                         type="submit"
                         rounded="md"
                         isLoading={loading}
+                        data-testid="add-gallery-button"
                      >
                         Tambah
                      </Button>

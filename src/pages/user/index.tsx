@@ -18,8 +18,6 @@ const UserDashboard = () => {
    const navigate = useNavigate();
    const { data } = useRemoteWebsite();
 
-   console.log(data);
-
    return (
       <DashboardLayoutUser sidebarFor="user">
          <VStack align="stretch" py="4">

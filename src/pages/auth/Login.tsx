@@ -29,11 +29,6 @@ const Login = () => {
    const navigate = useNavigate();
    const [loading, setLoading] = useState(false);
 
-   if (user.isAuth) {
-      if (user.value.authorize === 'admin') return <Navigate to="/admin" replace />;
-      else return <Navigate to="/user" replace />;
-   }
-
    const {
       register,
       handleSubmit,
@@ -139,6 +134,7 @@ const Login = () => {
                      w="full"
                      colorScheme="blue"
                      variant="solid"
+                     data-testid="login-auth-button"
                   >
                      Masuk
                   </Button>

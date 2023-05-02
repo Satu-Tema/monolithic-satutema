@@ -145,7 +145,13 @@ const TestimonyDashboard = () => {
                <VStack align="stretch" mb={5}>
                   <FormControl>
                      <FormLabel>Foto</FormLabel>
-                     <Input onChange={handleImageChange} type="file" pt={1} variant="outline" />
+                     <Input
+                        data-testid="file-input"
+                        onChange={handleImageChange}
+                        type="file"
+                        pt={1}
+                        variant="outline"
+                     />
                   </FormControl>
                </VStack>
                <VStack align="stretch" mb={5}>
@@ -173,7 +179,12 @@ const TestimonyDashboard = () => {
                </VStack>
 
                <VStack align="stretch">
-                  <Button isLoading={loading} onClick={handleSubmit(onSubmit)} colorScheme="blue">
+                  <Button
+                     data-testid="add-testimony-button"
+                     isLoading={loading}
+                     onClick={handleSubmit(onSubmit)}
+                     colorScheme="blue"
+                  >
                      Simpan
                   </Button>
                </VStack>

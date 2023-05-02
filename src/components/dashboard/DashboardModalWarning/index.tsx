@@ -26,7 +26,13 @@ const ModalWarning = ({
    children,
 }: ModalWarningProps): JSX.Element => {
    return (
-      <Modal size="sm" isOpen={isOpen} onClose={onClose} closeOnOverlayClick={!isLoading}>
+      <Modal
+         data-testid="modal-warning"
+         size="sm"
+         isOpen={isOpen}
+         onClose={onClose}
+         closeOnOverlayClick={!isLoading}
+      >
          <ModalOverlay />
          <ModalContent maxW={['calc(100vw - 30px)', 'sm']}>
             <ModalHeader>
@@ -61,6 +67,7 @@ const ModalWarning = ({
                         rounded="md"
                         onClick={buttonOnClick}
                         isLoading={isLoading}
+                        data-testid="button-primary"
                      >
                         {buttonText}
                      </Button>

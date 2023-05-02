@@ -154,7 +154,7 @@ const FeatureDashboard = () => {
                <VStack align="stretch" mb={5}>
                   <FormControl>
                      <FormLabel>Gambar</FormLabel>
-                     <Input onChange={handleImageChange} type="file" pt={1} variant="outline" />
+                     <Input data-testid="file-input" onChange={handleImageChange} type="file" pt={1} variant="outline" />
                      {fileImg?.length > 0 && (
                         <Box my={5}>
                            <img src={fileImg} alt={parseObj?.feature?.title} />

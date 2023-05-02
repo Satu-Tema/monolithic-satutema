@@ -165,6 +165,7 @@ const DashboardCreateNewProduct = () => {
                onClick={onOpen}
                px="4"
                colorScheme="blue"
+               data-testid="new-product-button"
             >
                Tambah Produk baru
             </Button>
@@ -198,6 +199,7 @@ const DashboardCreateNewProduct = () => {
                               accept="image/*"
                               variant="outline"
                               onChange={handleImageChange}
+                              data-testid="file-input"
                            />
                         </FormControl>
                      </VStack>
@@ -237,6 +239,7 @@ const DashboardCreateNewProduct = () => {
                         type="submit"
                         rounded="md"
                         isLoading={loading}
+                        data-testid="add-product-button"
                      >
                         Tambah
                      </Button>

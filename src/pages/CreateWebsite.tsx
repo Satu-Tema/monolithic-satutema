@@ -166,6 +166,7 @@ const CreateWebsite = () => {
                   w="full"
                   colorScheme="blue"
                   variant="solid"
+                  data-testid="create-website-button"
                >
                   Buat Website
                </Button>

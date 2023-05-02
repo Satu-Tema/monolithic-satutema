@@ -111,12 +111,17 @@ const ChoseTheme = () => {
                                  width="100%"
                                  colorScheme="blue"
                                  variant="outline"
+                                 data-testid="chosed-button"
                               >
                                  Digunakan
                               </Button>
                            ) : (
                               <ButtonGroup>
-                                 <Button onClick={() => onHandleOpenEdit(el)} colorScheme="blue">
+                                 <Button
+                                    data-testid="chose-theme-button"
+                                    onClick={() => onHandleOpenEdit(el)}
+                                    colorScheme="blue"
+                                 >
                                     Pilih Tema
                                  </Button>
                                  <Button
