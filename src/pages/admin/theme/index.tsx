@@ -38,7 +38,10 @@ const Theme = () => {
                      </Tr>
                   </Thead>
                   <Tbody>
-                     {data && data.map((el) => <DashboardTableTheme dataTheme={el} key={el.id} />)}
+                     {data &&
+                        data.map((el, index) => (
+                           <DashboardTableTheme index={index} dataTheme={el} key={el.id} />
+                        ))}
                   </Tbody>
                </Table>
             </Box>

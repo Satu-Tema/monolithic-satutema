@@ -59,6 +59,13 @@ const Categories = () => {
             if (data && data.data.status) {
                mutate('/admin/category');
                onCloseDelete();
+               toast({
+                  title: 'Sukses',
+                  description: data.data.message,
+                  status: 'success',
+                  isClosable: true,
+                  position: 'bottom',
+               });
             } else {
                toast({
                   title: 'Terjadi Kesalahan',

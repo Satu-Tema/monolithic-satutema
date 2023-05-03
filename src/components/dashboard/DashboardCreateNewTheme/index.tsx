@@ -126,6 +126,7 @@ const DashboardCreateNewTheme = () => {
                onClick={onOpen}
                px="4"
                colorScheme="blue"
+               data-testid="open-modal-theme"
             >
                Tambah Tema baru
             </Button>
@@ -190,6 +191,7 @@ const DashboardCreateNewTheme = () => {
                         type="submit"
                         rounded="md"
                         isLoading={loading}
+                        data-testid="button-add-theme"
                      >
                         Tambah
                      </Button>

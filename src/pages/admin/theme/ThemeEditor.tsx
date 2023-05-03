@@ -323,7 +323,13 @@ const ThemeEditor = () => {
                >
                   Publikasi
                </Button> */}
-               <Button colorScheme="blue" variant="solid" onClick={onSubmit} isLoading={loading}>
+               <Button
+                  data-testid="button-simpan"
+                  colorScheme="blue"
+                  variant="solid"
+                  onClick={onSubmit}
+                  isLoading={loading}
+               >
                   Simpan
                </Button>
             </Flex>
@@ -704,6 +710,7 @@ const ThemeEditor = () => {
                {navEditor !== '' && (
                   <>
                      <ThemeHover
+                        dataTestId="0"
                         onClose={() => {
                            setNavEditor('');
                            setActiveSidebar({

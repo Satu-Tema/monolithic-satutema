@@ -16,9 +16,6 @@ describe("Sidebar Pengaturan Website", () => {
 
         // Fill out settings
         cy.get('input[name="title"]').clear().type("My Website");
-        // cy.get('textarea[name="websiteDescription"]').type(
-        //     "This is my website description"
-        // );
         cy.get('input[name="description"]').clear().type("This is my website description");
         cy.get('input[name="address"]').clear().type("Malang, jl Brantas");
         cy.get('input[name="youtube"]').clear().type("yukafi");
@@ -37,10 +34,11 @@ describe("Sidebar Pengaturan Website", () => {
                 lastModified: Date.now(),
             });
         });
-        // Save settings
+
         cy.contains("Simpan").click();
 
         cy.reload();
+
         cy.get('input[name="title"]').should('have.value', 'My Website');
     });
 });

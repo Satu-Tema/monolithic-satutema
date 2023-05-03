@@ -116,6 +116,7 @@ const DashboardCreateNewCategory = () => {
                onClick={onOpen}
                px="4"
                colorScheme="blue"
+               data-testid="open-modal-category"
             >
                Tambah kategori baru
             </Button>
@@ -167,6 +168,7 @@ const DashboardCreateNewCategory = () => {
                         type="submit"
                         rounded="md"
                         isLoading={loading}
+                        data-testid="button-add-category"
                      >
                         Tambah
                      </Button>

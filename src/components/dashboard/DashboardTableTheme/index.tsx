@@ -29,8 +29,9 @@ import ModalWarning from '../DashboardModalWarning';
 
 interface IDashboardTableTheme {
    dataTheme: ThemeRemoteDataType;
+   index: number;
 }
-const DashboardTableTheme = ({ dataTheme }: IDashboardTableTheme) => {
+const DashboardTableTheme = ({ dataTheme, index }: IDashboardTableTheme) => {
    const toast = useToast();
    const navigate = useNavigate();
    const [loading, setLoading] = useState(false);
@@ -51,8 +52,15 @@ const DashboardTableTheme = ({ dataTheme }: IDashboardTableTheme) => {
          .then((data) => {
             setLoading(false);
             if (data && data.data.status) {
-               mutate('/admin/theme');
+               mutate('/theme');
                onDeleteModalClose();
+               toast({
+                  title: 'Sukses',
+                  description: data.data.message,
+                  status: 'success',
+                  isClosable: true,
+                  position: 'bottom',
+               });
             } else {
                toast({
                   title: 'Terjadi Kesalahan',
@@ -88,7 +96,7 @@ const DashboardTableTheme = ({ dataTheme }: IDashboardTableTheme) => {
    };
    return (
       <>
-         <Tr fontSize="md">
+         <Tr fontSize="md" data-testid={`row-${index}`}>
             <Td>
                <Text textTransform="capitalize">{dataTheme?.theme_name}</Text>
             </Td>
@@ -106,12 +114,18 @@ const DashboardTableTheme = ({ dataTheme }: IDashboardTableTheme) => {
                         color: '#fff',
                         outline: 'none',
                      }}
+                     data-testid={`open-modal-${index}`}
                   />
                   <MenuList minW="36">
-                     <MenuItem onClick={() => navigate(`/admin/theme-editor/${dataTheme.id}`)}>
+                     <MenuItem
+                        data-testid={`button-edit-${index}`}
+                        onClick={() => navigate(`/admin/theme-editor/${dataTheme.id}`)}
+                     >
                         Edit
                      </MenuItem>
-                     <MenuItem onClick={onDeleteModalOpen}>Delete</MenuItem>
+                     <MenuItem data-testid={`button-delete-${index}`} onClick={onDeleteModalOpen}>
+                        Delete
+                     </MenuItem>
                   </MenuList>
                </Menu>
             </Td>
